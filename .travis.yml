@@ -2,8 +2,8 @@ language:
 - objective-c
 env:
   global:
-  - NP_TAG=v1.8.2 # version of numpy to build
-  - PACKAGES=numpy
+  - SP_TAG=v0.14.0 # version of scipy to build
+  - PACKAGES=scipy
   matrix:
   - VERSION=2.7.8
   - VERSION=3.3.5
@@ -11,7 +11,7 @@ env:
 install:
   - cd numpy-atlas-binaries
   - git submodule update --init
-  - cd numpy && git fetch --tags && cd ..
+  - cd scipy && git fetch --tags && cd ..
   - source travis_install.sh
 script:
   - sudo rm -rf /usr/local/gfortran
@@ -24,7 +24,7 @@ deploy:
   provider: cloudfiles
   username: travis-worker
   api_key:
-    secure: "cK7eB0yJEINBTB4ZRXON2UxABCcBynX7wwdC1btc9nmAFflEmt4U2h7s4oSiTZZINwDf9iiebMNqD+h0LKG95gSoeCIXoJqy5AWT8uWZy4WBjiEXccoom3qNoddkm9ebkid9srM8gtpclZCZ4C+sIijw2IiyDn/yPy6q9HINVlM="
+    secure: "FoewqVjnW7ue8TYh+hqvgIW4ZWDumtsuVdLtx7VoHn9IZCmq7NrSYzigvPKZjZ35+KEO1qQEjUmRpzfTi1RIuqvqI8x9p9xlE18ndfyEOfJ8Yy2/EEYsE8kzhSZn1FWS4AmK2UYGthUVPdDX3koQO3niec27MbrQJCw9F5cIvg8="
   region: ORD
   container: wheels
   skip_cleanup: true

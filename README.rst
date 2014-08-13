@@ -1,13 +1,17 @@
-##################################
-numpy-atlas-binaries wheel builder
-##################################
+#########################
+scipy ATLAS wheel builder
+#########################
 
-Repository to build dual arch 32 / 64 bit numpy OSX wheels against ATLAS.
+Repository to build dual arch 32 / 64 bit scipy OSX wheels against ATLAS.
 
 See ``README.md`` in ``numpy-atlas-binaries`` submodule for details.
 
-To set the numpy version to build, set the ``NP_TAG`` variable in the
+To set the scipy version to build, set the ``SP_TAG`` variable in the
 ``.travis.yml`` file.
+
+The ``numpy-atlas-binaries`` submodule has a file ``wscript`` in which you
+will find the numpy dependencies for the scipy wheel builds.  These need to be
+available for pip install.
 
 The wheels get uploaded to a `rackspace container
 <http://a365fff413fe338398b6-1c8a9b3114517dc5fe17b7c3f8c63a43.r19.cf2.rackcdn.com>`_
