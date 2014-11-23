@@ -30,7 +30,7 @@ script:
   - pip install nose
   # Python 3.4 needs more recent numpy
   - if [ -n "$(pyver_ge $VERSION 3.4.0)" ]; then
-    pip install numpy;
+    pip install --upgrade numpy;
     fi
   - mkdir tmp_test_dir
   - cd tmp_test_dir
