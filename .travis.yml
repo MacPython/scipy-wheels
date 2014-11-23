@@ -29,7 +29,7 @@ install:
 script:
   - pip install nose
   # Python 3.4 needs more recent numpy
-  - if [ -n "$(pyver_ge 3.4.0 $VERSION)" ]; then
+  - if [ -n "$(pyver_ge $VERSION 3.4.0)" ]; then
     pip install numpy;
     fi
   - mkdir tmp_test_dir
@@ -37,7 +37,7 @@ script:
   - python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - cd ..
-  - unset CC CXX
+  - unset CC CXX # reset to default compilation for deploy modules
 before_deploy: cd scipy/dist
 deploy:
   provider: cloudfiles
