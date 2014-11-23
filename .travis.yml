@@ -28,17 +28,22 @@ install:
   - cd ..
 script:
   - pip install nose
+  # Python 3.4 needs more recent numpy
+  - if [ -n "$(pyver_ge 3.4.0 $VERSION)" ]; then
+    pip install numpy;
+    fi
   - mkdir tmp_test_dir
   - cd tmp_test_dir
   - python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - cd ..
+  - unset CC CXX
 before_deploy: cd scipy/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
   api_key:
-    secure: "cihGM6hRwKIyd66zGCYLz4S1R1V/ubHEF5CZZ1oWKbO9ztDM/9Gjea2dnMMG7bCHoPMGj5ARMXwpwNnlpZyZgBTuJ/vV9CXKOyoCx+E6oixForAfK2QCikyBQaw7iUZYyM24FFlC4xw92I5sRi8kv6m0YiVCLfVWldmUXEj6nOo="
+    secure: "TSOBqCoQFnIjFb98ItonBT1ubfBo/pYsS7A69Q6lUAjl7Mun+F+XE4GgP0QxtiyFRBUsYZUQYsoqKoro3z/qKFUBfpBuFlPEPhtbRmoQAGSSKFtXBI9XxwJAiGL6CX/z22fCNOWWaWel4X6WacEb+ygoI+Hg21WFQT7djEFNctE="
   region: ORD
   container: wheels
   skip_cleanup: true
