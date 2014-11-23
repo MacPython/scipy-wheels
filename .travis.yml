@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  # - LATEST_TAG=1 # comment out to build version in submodule
+  - LATEST_TAG=1 # comment out to build version in submodule
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
   - VERSION=2.7.8 NUMPY_VERSION=1.6.2
