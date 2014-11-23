@@ -2,29 +2,38 @@ language:
 - objective-c
 env:
   global:
-  - SP_TAG=v0.14.0 # version of scipy to build
-  - PACKAGES=scipy
+  # - LATEST_TAG=1 # comment out to build version in submodule
   matrix:
-  - VERSION=2.7.8
-  - VERSION=3.3.5
-  - VERSION=3.4.1 UPGRADE_NP=1 # fails against np 1.7.1
+  - VERSION=2.7.8 NUMPY_VERSION=1.5.1
+  - VERSION=3.3.5 NUMPY_VERSION=1.7.1
+  - VERSION=3.4.1 NUMPY_VERSION=1.7.1
 install:
-  - cd numpy-atlas-binaries
-  - git submodule update --init
-  - cd scipy && git fetch --tags && cd ..
-  - source travis_install.sh
+  - source terryfy/travis_tools.sh
+  - get_python_environment macpython $VERSION venv
+  - pip install delocate
+  - pip install cython
+  - pip install numpy==$NUMPY_VERSION
+  - if [ -n "$LATEST_TAG" ]; then checkout_closest_tag scipy; fi
+  - cd scipy
+  - python setup.py bdist_wheel
+  - delocate-listdeps dist/*.whl # lists library dependencies
+  - delocate-wheel dist/*.whl # copies library dependencies into wheel
+  - delocate-addplat --rm-orig -x 10_9 -x 10_10 dist/*.whl
+  - pip install dist/*.whl
+  - cd ..
 script:
-  - sudo rm -rf /usr/local/gfortran
+  - pip install nose
   - mkdir tmp_test_dir
   - cd tmp_test_dir
-  - source ../travis_test.sh
-  - cd ../..
-before_deploy: cd numpy-atlas-binaries/build/wheelhouse
+  - python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
+  - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
+  - cd ..
+before_deploy: cd scipy/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
   api_key:
-    secure: "FoewqVjnW7ue8TYh+hqvgIW4ZWDumtsuVdLtx7VoHn9IZCmq7NrSYzigvPKZjZ35+KEO1qQEjUmRpzfTi1RIuqvqI8x9p9xlE18ndfyEOfJ8Yy2/EEYsE8kzhSZn1FWS4AmK2UYGthUVPdDX3koQO3niec27MbrQJCw9F5cIvg8="
+    secure: "cihGM6hRwKIyd66zGCYLz4S1R1V/ubHEF5CZZ1oWKbO9ztDM/9Gjea2dnMMG7bCHoPMGj5ARMXwpwNnlpZyZgBTuJ/vV9CXKOyoCx+E6oixForAfK2QCikyBQaw7iUZYyM24FFlC4xw92I5sRi8kv6m0YiVCLfVWldmUXEj6nOo="
   region: ORD
   container: wheels
   skip_cleanup: true
