@@ -2,12 +2,13 @@ language:
 - objective-c
 env:
   global:
-  #- LATEST_TAG=1 # comment out to build version in submodule
+  - BUILD_COMMIT=latest-tag # comment out to build version in submodule
+  - REPO_DIR=scipy
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
-  - VERSION=2.7.8 NUMPY_VERSION=1.6.2
+  - VERSION=2.7.10 NUMPY_VERSION=1.6.2
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
-  - VERSION=3.4.1 NUMPY_VERSION=1.7.1
+  - VERSION=3.4.3 NUMPY_VERSION=1.7.1
 install:
   # Install dual arch gfortran
   - sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
@@ -16,8 +17,10 @@ install:
   - pip install delocate
   - pip install cython
   - pip install numpy==$NUMPY_VERSION
-  - if [ -n "$LATEST_TAG" ]; then checkout_closest_tag scipy; fi
-  - cd scipy
+  - if [ -n "$BUILD_COMMIT" ]; then
+        checkout_commit $REPO_DIR $BUILD_COMMIT;
+    fi
+  - cd $REPO_DIR
   - export CC=clang
   - export CXX=clang++
   - python setup.py bdist_wheel
@@ -38,7 +41,7 @@ script:
   - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - cd ..
   - unset CC CXX # reset to default compilation for deploy modules
-before_deploy: cd scipy/dist
+before_deploy: cd $REPO_DIR/dist
 deploy:
   provider: cloudfiles
   username: travis-worker
