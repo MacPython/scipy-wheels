@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  - BUILD_COMMIT=v0.16.0 # comment out to build version in submodule
+  - BUILD_COMMIT=master # comment out to build version in submodule
   - REPO_DIR=scipy
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
