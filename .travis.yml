@@ -9,6 +9,7 @@ env:
   - VERSION=2.7.10 NUMPY_VERSION=1.6.2
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
+  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
 install:
   # Install dual arch gfortran
   - sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
@@ -42,6 +43,9 @@ script:
   - cd ..
   - unset CC CXX # reset to default compilation for deploy modules
 before_deploy: cd $REPO_DIR/dist
+  - cd $REPO_DIR/dist
+  # Fix for https://github.com/travis-ci/travis-ci/issues/4635
+  - rvm 1.9.3 do gem install net-ssh -v 2.9.2
 deploy:
   provider: cloudfiles
   username: travis-worker
