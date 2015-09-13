@@ -2,7 +2,7 @@ language:
 - objective-c
 env:
   global:
-  - BUILD_COMMIT=master # comment out to build version in submodule
+  - BUILD_COMMIT="latest-tag" # comment out to build version in submodule
   - REPO_DIR=scipy
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
@@ -42,7 +42,7 @@ script:
   - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - cd ..
   - unset CC CXX # reset to default compilation for deploy modules
-before_deploy: cd $REPO_DIR/dist
+before_deploy:
   - cd $REPO_DIR/dist
   # Fix for https://github.com/travis-ci/travis-ci/issues/4635
   - rvm 1.9.3 do gem install net-ssh -v 2.9.2
