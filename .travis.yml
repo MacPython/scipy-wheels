@@ -7,9 +7,9 @@ env:
   - NIPY_WHEEL_URL=https://nipy.bic.berkeley.edu/scipy_installers
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
-  - VERSION=2.7.10 NUMPY_VERSION=1.6.2
-  - VERSION=3.3.5 NUMPY_VERSION=1.7.1
-  - VERSION=3.4.3 NUMPY_VERSION=1.7.1
+  #- VERSION=2.7.10 NUMPY_VERSION=1.6.2
+  #- VERSION=3.3.5 NUMPY_VERSION=1.7.1
+  #- VERSION=3.4.3 NUMPY_VERSION=1.7.1
   - VERSION=3.5.0 NUMPY_VERSION=1.7.1
 install:
   # Install dual arch gfortran
@@ -42,8 +42,8 @@ script:
     fi
   - mkdir tmp_test_dir
   - cd tmp_test_dir
-  - python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
-  - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
+    #- python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
+    #- arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
   - cd ..
   - unset CC CXX # reset to default compilation for deploy modules
 before_deploy:
