@@ -4,13 +4,12 @@ env:
   global:
   - BUILD_COMMIT="latest-tag" # comment out to build version in submodule
   - REPO_DIR=scipy
-  - NIPY_WHEEL_URL=https://nipy.bic.berkeley.edu/scipy_installers
   matrix:
   # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
   - VERSION=2.7.10 NUMPY_VERSION=1.6.2
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
-  - VERSION=3.5.0 NUMPY_VERSION=1.9.2
+  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
 install:
   # Install dual arch gfortran
   - sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
@@ -20,7 +19,7 @@ install:
   # Update to latest wheel package for Python 3.5
   - pip install -U wheel
   # Install patched wheel for Python 3.5
-  - pip install --no-index -f $NIPY_WHEEL_URL numpy==$NUMPY_VERSION
+  - pip install -f $NIPY_WHEELHOUSE numpy==$NUMPY_VERSION
   - pip install cython
   - if [ -n "$BUILD_COMMIT" ]; then
         checkout_commit $REPO_DIR $BUILD_COMMIT;
