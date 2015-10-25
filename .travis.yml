@@ -10,7 +10,7 @@ env:
   - VERSION=2.7.10 NUMPY_VERSION=1.6.2
   - VERSION=3.3.5 NUMPY_VERSION=1.7.1
   - VERSION=3.4.3 NUMPY_VERSION=1.7.1
-  - VERSION=3.5.0 NUMPY_VERSION=1.9.3
+  - VERSION=3.5.0 NUMPY_VERSION=1.9.2
 install:
   # Install dual arch gfortran
   - sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
@@ -36,9 +36,9 @@ install:
   - cd ..
 script:
   - pip install nose
-  # Python 3.4 needs more recent numpy
+  # Python 3.4 needs more recent numpy (for testing only)
   - if [ -n "$(pyver_ge $VERSION 3.4.0)" ]; then
-    pip install --upgrade numpy;
+    pip install numpy==1.9.2;
     fi
   - mkdir tmp_test_dir
   - cd tmp_test_dir
