@@ -16,8 +16,8 @@ install:
   - source terryfy/travis_tools.sh
   - get_python_environment macpython $VERSION venv
   - pip install delocate
-  # Update to latest wheel package for Python 3.5
-  - pip install -U wheel
+  # Update to latest pip and wheel package for Python 3.5
+  - pip install -U pip wheel
   # Install patched wheel for Python 3.5
   - pip install -f $NIPY_WHEELHOUSE numpy==$NUMPY_VERSION
   - pip install cython
