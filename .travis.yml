@@ -1,59 +1,96 @@
-language:
-- objective-c
 env:
-  global:
-  - BUILD_COMMIT="latest-tag" # comment out to build version in submodule
-  - REPO_DIR=scipy
-  matrix:
-  # need numpy at least 1.6.2 to avoid '-faltivec' flag from np.distutils
-  - VERSION=2.7.10 NUMPY_VERSION=1.6.2
-  - VERSION=3.3.5 NUMPY_VERSION=1.7.1
-  - VERSION=3.4.3 NUMPY_VERSION=1.7.1
-  - VERSION=3.5.0 NUMPY_VERSION=1.7.1
+    global:
+        - REPO_DIR=scipy
+        - BUILD_COMMIT=v0.17.1
+        - PLAT=x86_64
+        - NP_BUILD_DEP="numpy==1.7.1"
+        - NP_TEST_DEP="numpy==1.7.1"
+        - UNICODE_WIDTH=32
+        - MANYLINUX_URL=https://nipy.bic.berkeley.edu/manylinux
+        - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
+        # Following generated with
+        # travis encrypt -r MacPython/scipy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
+        - secure:
+            "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
+
+language: python
+sudo: required
+dist: trusty
+services: docker
+
+matrix:
+  include:
+    - os: linux
+      python: 2.7
+    - os: linux
+      python: 2.7
+      env:
+        - UNICODE_WIDTH=16
+    - os: linux
+      python: 2.7
+      env:
+        - PLAT=i686
+    - os: linux
+      python: 2.7
+      env:
+        - PLAT=i686
+        - UNICODE_WIDTH=16
+    - os: linux
+      python: 3.4
+      env:
+        # Python 3.4 needs more recent numpy (for testing only)
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: linux
+      python: 3.4
+      env:
+        - PLAT=i686
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: linux
+      python: 3.5
+      env:
+        - NP_BUILD_DEP=numpy==1.9.3
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: linux
+      python: 3.5
+      env:
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.9.3
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: osx
+      language: objective-c
+      env:
+        - TRAVIS_PYTHON_VERSION=2.7
+    - os: osx
+      language: objective-c
+      env:
+        - TRAVIS_PYTHON_VERSION=3.4
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: osx
+      language: objective-c
+      env:
+        - TRAVIS_PYTHON_VERSION=3.5
+        - NP_BUILD_DEP=numpy==1.9.3
+        - NP_TEST_DEP=numpy==1.9.3
+
+before_install:
+    - BUILD_DEPENDS="$NP_BUILD_DEP Cython"
+    - TEST_DEPENDS="$NP_TEST_DEP nose"
+    - source multibuild/common_utils.sh
+    - source multibuild/travis_steps.sh
+    - before_install
+
 install:
-  # Install dual arch gfortran
-  - sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
-  - source terryfy/travis_tools.sh
-  - get_python_environment macpython $VERSION venv
-  - pip install delocate
-  # Update to latest pip and wheel package for Python 3.5
-  - pip install -U pip wheel
-  # Install patched wheel for Python 3.5
-  - pip install -f $NIPY_WHEELHOUSE numpy==$NUMPY_VERSION
-  - pip install cython
-  - if [ -n "$BUILD_COMMIT" ]; then
-        checkout_commit $REPO_DIR $BUILD_COMMIT;
-    fi
-  - cd $REPO_DIR
-  - export CC=clang
-  - export CXX=clang++
-  - python setup.py bdist_wheel
-  - delocate-listdeps dist/*.whl # lists library dependencies
-  - delocate-wheel dist/*.whl # copies library dependencies into wheel
-  - delocate-addplat --rm-orig -x 10_9 -x 10_10 dist/*.whl
-  - pip install dist/*.whl
-  - cd ..
+    # Maybe get and clean and patch source
+    - clean_code $REPO_DIR $BUILD_COMMIT
+    - build_wheel $REPO_DIR $PLAT
+
 script:
-  - pip install nose
-  # Python 3.4 needs more recent numpy (for testing only)
-  - if [ -n "$(pyver_ge $VERSION 3.4.0)" ]; then
-    pip install numpy==1.9.2;
-    fi
-  - mkdir tmp_test_dir
-  - cd tmp_test_dir
-  - python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
-  - arch -i386 python -c "import sys; import scipy; sys.exit(not scipy.test().wasSuccessful())"
-  - cd ..
-  - unset CC CXX # reset to default compilation for deploy modules
-before_deploy:
-  - cd $REPO_DIR/dist
-  # Fix for https://github.com/travis-ci/travis-ci/issues/4635
-  - rvm 1.9.3 do gem install net-ssh -v 2.9.2
-deploy:
-  provider: cloudfiles
-  username: travis-worker
-  api_key:
-    secure: "TSOBqCoQFnIjFb98ItonBT1ubfBo/pYsS7A69Q6lUAjl7Mun+F+XE4GgP0QxtiyFRBUsYZUQYsoqKoro3z/qKFUBfpBuFlPEPhtbRmoQAGSSKFtXBI9XxwJAiGL6CX/z22fCNOWWaWel4X6WacEb+ygoI+Hg21WFQT7djEFNctE="
-  region: ORD
-  container: wheels
-  skip_cleanup: true
+    - install_run $PLAT
+
+after_success:
+    # Upload wheels to Rackspace container
+    - pip install wheelhouse-uploader
+    - python -m wheelhouse_uploader upload --local-folder
+          ${TRAVIS_BUILD_DIR}/wheelhouse/
+          --no-update-index
+          wheels
