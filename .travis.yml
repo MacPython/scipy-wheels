@@ -3,6 +3,9 @@ env:
         - REPO_DIR=scipy
         - BUILD_COMMIT=v0.17.1
         - PLAT=x86_64
+        # OSX build of scipy on Python 3.5 needs patched 1.7.1 wheel to avoid
+        # https://github.com/numpy/numpy/issues/6204.  Patched numpy 1.7.1
+        # wheel for Python 3.5 at nipy manylinux URL.
         - NP_BUILD_DEP="numpy==1.7.1"
         - NP_TEST_DEP="numpy==1.7.1"
         - UNICODE_WIDTH=32
@@ -48,13 +51,11 @@ matrix:
     - os: linux
       python: 3.5
       env:
-        - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
     - os: linux
       python: 3.5
       env:
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
     - os: osx
       language: objective-c
@@ -69,7 +70,6 @@ matrix:
       language: objective-c
       env:
         - TRAVIS_PYTHON_VERSION=3.5
-        - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
 
 before_install:

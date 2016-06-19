@@ -13,11 +13,11 @@ function pre_build {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    if [ -n "$IS_OSX" ]; then
-        python -c 'import scipy; scipy.test("full")'
-    else  # Test both architectures on OSX
+    if [ -n "$IS_OSX" ]; then  # Test both architectures on OSX
         arch -i386 python -c 'import scipy; scipy.test("full")'
         arch -x86_64 python -c 'import scipy; scipy.test("full")'
+    else  # Test both architectures on OSX
+        python -c 'import scipy; scipy.test("full")'
     fi
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
