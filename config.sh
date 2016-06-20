@@ -7,7 +7,7 @@ function pre_build {
     if [ -n "$IS_OSX" ]; then
         sudo installer -pkg archives/gfortran-4.2.3.pkg -target /
     else
-        build_openblas >& /dev/null
+        build_openblas > /dev/null
         # Force scipy to use OpenBLAS regardless of what numpy uses
         cat << EOF > $HOME/site.cfg
 [openblas]
