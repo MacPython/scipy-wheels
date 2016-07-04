@@ -3,7 +3,7 @@ Building and uploading scipy wheels
 ###################################
 
 We automate wheel building using this custom github repository that builds on
-the travis-ci OSX machines, travis-ci Linux machines, and the Appveyor VMs.
+the travis-ci OSX machines and the travis-ci Linux machines.
 
 The travis-ci interface for the builds is
 https://travis-ci.org/MacPython/scipy-wheels
@@ -27,7 +27,7 @@ The wheel-building repository:
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
-defined by the manylinux standard.
+defined by the manylinux1 standard.
 
 The ``.travis.yml`` file in this repository has a line containing the API key
 for the Rackspace container encrypted with an RSA key that is unique to the
@@ -117,9 +117,9 @@ in your ``~/.pypirc`` file::
     username: your_user_name
     password: your_password
 
-So, in this case, `wheel-uploader` will download all wheels starting with
-`scipy-0.18.0-` from http://wheels.scipy.org to `~/wheelhouse`, then upload
-them to pypi.
+So, in this case, ``wheel-uploader`` will download all wheels starting with
+``scipy-0.18.0-`` from http://wheels.scipy.org to ``~/wheelhouse``, then
+upload them to PyPI.
 
 Of course, you will need permissions to upload to PyPI, for this to work.
 
