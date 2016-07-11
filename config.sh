@@ -6,8 +6,6 @@ source gfortran-install/gfortran_utils.sh
 function build_wheel {
     if [ -z "$IS_OSX" ]; then
         build_libs $PLAT
-        # Debugging 32-bit manylinux failures
-        export OPT="-O1"
         build_pip_wheel $@
     else
         build_osx_wheel $@
