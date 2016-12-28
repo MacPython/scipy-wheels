@@ -64,21 +64,27 @@ matrix:
         - NP_BUILD_DEP=numpy==1.9.3
         - NP_TEST_DEP=numpy==1.9.3
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=2.7
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=3.4
         - NP_TEST_DEP=numpy==1.9.3
     - os: osx
-      language: objective-c
+      language: generic
       env:
         - MB_PYTHON_VERSION=3.5
         # OSX build of scipy on Python 3.5 needs built 1.8.2 wheel to avoid
         # https://github.com/numpy/numpy/issues/6204.  numpy 1.8.2 wheel for
         # Python 3.5 at nipy manylinux URL.
+        - NP_BUILD_DEP=numpy==1.8.2
+        - NP_TEST_DEP=numpy==1.9.3
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.8.2
         - NP_TEST_DEP=numpy==1.9.3
 
