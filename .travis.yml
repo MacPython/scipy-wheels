@@ -4,8 +4,8 @@ env:
         # Also see DAILY_COMMIT below
         - BUILD_COMMIT=v0.18.1
         - PLAT=x86_64
-        - NP_BUILD_DEP="numpy==1.7.1"
-        - NP_TEST_DEP="numpy==1.7.1"
+        - NP_BUILD_DEP="numpy==1.8.2"
+        - NP_TEST_DEP="numpy==1.8.2"
         - UNICODE_WIDTH=32
         - MANYLINUX_URL=https://nipy.bic.berkeley.edu/manylinux
         - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
