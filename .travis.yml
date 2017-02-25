@@ -2,7 +2,7 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=v0.18.1
+        - BUILD_COMMIT=v0.19.0rc2
         - PLAT=x86_64
         - NP_BUILD_DEP="numpy==1.8.2"
         - NP_TEST_DEP="numpy==1.8.2"
@@ -14,7 +14,7 @@ env:
         - secure:
             "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
         # Daily commit, if present, overrides BUILD_COMMIT
-        - DAILY_COMMIT=master
+        # - DAILY_COMMIT=master
 
 language: python
 # Default Python version is usually 2.7
