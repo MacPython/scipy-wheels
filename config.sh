@@ -34,22 +34,9 @@ function build_osx_wheel {
     # Standard gfortran won't build dual arch objects, so we have to build two
     # wheels, one for 32-bit, one for 64, then fuse them.
     local repo_dir=${1:-$REPO_DIR}
-    local wheelhouse=$(abspath ${WHEEL_SDIR:-wheelhouse})
     local py_ld_flags="-Wall -undefined dynamic_lookup -bundle"
-    local wheelhouse32=${wheelhouse}32
 
     install_gfortran
-    # 32-bit wheel
-    local arch="-m32"
-    set_arch $arch
-    # Build libraries
-    build_libs i686
-    # Build wheel
-    mkdir -p $wheelhouse32
-    export LDSHARED="$CC $py_ld_flags"
-    export LDFLAGS="$arch $py_ld_flags"
-    build_pip_wheel "$repo_dir"
-    mv ${wheelhouse}/*whl $wheelhouse32
     # 64-bit wheel
     local arch="-m64"
     set_arch $arch
@@ -58,10 +45,6 @@ function build_osx_wheel {
     export LDSHARED="$CC $py_ld_flags"
     export LDFLAGS="$arch $py_ld_flags"
     build_pip_wheel "$repo_dir"
-    # Fuse into dual arch wheel(s)
-    for whl in ${wheelhouse}/*.whl; do
-        delocate-fuse "$whl" "${wheelhouse32}/$(basename $whl)"
-    done
 }
 
 function run_tests {
@@ -70,8 +53,6 @@ function run_tests {
         # Can't afford full tests; build too slow
         test_cmd="import sys; import scipy; \
             sys.exit(not scipy.test().wasSuccessful())"
-        # No time for dual arch tests either
-        # arch -i386 python -c "$test_cmd"
         arch -x86_64 python -c "$test_cmd"
     else
         test_cmd="import sys; import scipy; \
