@@ -49,16 +49,9 @@ function build_osx_wheel {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    if [ -n "$IS_OSX" ]; then  # Test both architectures on OSX
-        # Can't afford full tests; build too slow
-        test_cmd="import sys; import scipy; \
-            sys.exit(not scipy.test().wasSuccessful())"
-        arch -x86_64 python -c "$test_cmd"
-    else
-        test_cmd="import sys; import scipy; \
-            sys.exit(not scipy.test('full').wasSuccessful())"
-        python -c "$test_cmd"
-    fi
+    test_cmd="import sys; import scipy; \
+        sys.exit(not scipy.test('full').wasSuccessful())"
+    python -c "$test_cmd"
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
 }
