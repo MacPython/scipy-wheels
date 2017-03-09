@@ -49,8 +49,12 @@ function build_osx_wheel {
 
 function run_tests {
     # Runs tests on installed distribution from an empty directory
-    test_cmd="import sys; import scipy; \
-        sys.exit(not scipy.test('full').wasSuccessful())"
+    # OSX tests seem to time out pretty often
+    if [ -z "$IS_OSX" ]; then
+        local extra="'full'"
+    fi
+    local test_cmd="import sys; import scipy; \
+        sys.exit(not scipy.test($extra).wasSuccessful())"
     python -c "$test_cmd"
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
