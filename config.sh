@@ -50,8 +50,9 @@ function build_osx_wheel {
 function run_tests {
     # Runs tests on installed distribution from an empty directory
     # OSX tests seem to time out pretty often
+    local extra="verbose=3"
     if [ -z "$IS_OSX" ]; then
-        local extra="'full'"
+        extra="'full', $extra"
     fi
     local test_cmd="import sys; import scipy; \
         sys.exit(not scipy.test($extra).wasSuccessful())"
