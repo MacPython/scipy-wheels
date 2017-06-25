@@ -63,6 +63,12 @@ The `scipy-wheels` repository will build the commit specified in the
 ``BUILD_COMMIT`` at the top of the ``.travis.yml`` file.  This can be any
 naming of a commit, including branch name, tag name or commit hash.
 
+Note: when making a SciPy release, it's best to only push the commit (not the
+tag) of the release to the ``scipy`` repo, then change ``BUILD_COMMIT`` to the
+commit hash, and only after all wheel builds completed successfully push the
+release tag to the repo.  This avoids having to move or delete the tag in case
+of an unexpected build/test issue.
+
 Uploading the built wheels to pypi
 ==================================
 
