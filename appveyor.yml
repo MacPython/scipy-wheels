@@ -171,7 +171,7 @@ build_script:
       $env:NPY_NUM_BUILD_JOBS = "4"
 
       mkdir dist
-      pip wheel -v -v -v --wheel-dir=dist .
+      python setup.py bdist_wheel
   - ps: |
       # Upload artifact to Appveyor immediately after build
       ls dist -r | Foreach-Object {
