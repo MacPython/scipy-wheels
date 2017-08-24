@@ -100,7 +100,7 @@ install:
      print(sys.platform, platform.machine(), struct.calcsize('P') * 8, )"
 
   # Get needed submodules
-  - git submodule update --init
+  - git submodule update --init scipy numpy-distutils
 
   # Download and install static "openblas.a" to PYTHON\lib
   - ps: |
