@@ -13,8 +13,8 @@ env:
         # travis encrypt -r MacPython/scipy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
         - secure:
             "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
-        # Daily commit, if present, overrides BUILD_COMMIT
-        # - DAILY_COMMIT=master
+        # Commit when running from daily branch
+        - DAILY_COMMIT=master
 
 language: python
 # Default Python version is usually 2.7
@@ -102,12 +102,12 @@ matrix:
         - NP_TEST_DEP=numpy==1.11.3
 
 before_install:
-    - if [ -z "$DAILY_COMMIT" ]; then
+    - if [ "$TRAVIS_BRANCH" == "daily" ]; then
+          CONTAINER="pre-release";
+          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
+      else
           CONTAINER=wheels;
           UPLOAD_ARGS="--no-update-index";
-      else
-          CONTAINER="pre-release";
-          BUILD_COMMIT=$DAILY_COMMIT;
       fi
     - BUILD_DEPENDS="$NP_BUILD_DEP Cython"
     - TEST_DEPENDS="$NP_TEST_DEP nose pytest"
