@@ -60,9 +60,7 @@ function run_tests {
     if [ -z "$IS_OSX" ]; then
         extra="'full', $extra"
     fi
-    local test_cmd="import sys; import scipy; \
-        sys.exit(not scipy.test($extra).wasSuccessful())"
-    python -c "$test_cmd"
+    python ../run_scipy_tests.py $extra
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
 }
