@@ -160,6 +160,8 @@ install:
 build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
+  # Append license text relevant for the built wheel
+  - type ..\LICENSE_win32.txt >> LICENSE.txt
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
       If ($PYTHON_ARCH -eq 32) {
