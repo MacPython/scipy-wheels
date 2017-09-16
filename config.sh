@@ -59,6 +59,9 @@ function run_tests {
     if [ -z "$IS_OSX" ]; then
         local extra="full"
     fi
+    # Check bundled license file
+    python ../check_license.py
+    # Run tests
     python ../run_scipy_tests.py $extra
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'

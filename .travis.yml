@@ -118,6 +118,7 @@ before_install:
 install:
     # Maybe get and clean and patch source
     - clean_code $REPO_DIR $BUILD_COMMIT
+    - ./patch_code.sh $REPO_DIR
     - build_wheel $REPO_DIR $PLAT
 
 script:

@@ -160,6 +160,8 @@ install:
 build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
+  # Append license text relevant for the built wheel
+  - type ..\LICENSE_win32.txt >> LICENSE.txt
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
       If ($PYTHON_ARCH -eq 32) {
@@ -185,6 +187,7 @@ before_test:
   - python -m pip install "%NUMPY_TEST_DEP%"
 
 test_script:
+  - python ..\check_license.py
   - python runtests.py -n -m %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
