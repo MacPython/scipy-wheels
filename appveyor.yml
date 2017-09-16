@@ -187,6 +187,7 @@ before_test:
   - python -m pip install "%NUMPY_TEST_DEP%"
 
 test_script:
+  - python ..\check_license.py
   - python runtests.py -n -m %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
