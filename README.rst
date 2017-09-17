@@ -11,6 +11,35 @@ https://travis-ci.org/MacPython/scipy-wheels
 The driving github repository is
 https://github.com/MacPython/scipy-wheels
 
+Using the repository
+====================
+
+There are two important branches:
+
+* ``master`` - for building releases;
+* ``daily`` - for daily builds.
+
+Travis-CI builds the ``daily`` branch - er - daily, via a `Travis-CI cron job
+<https://docs.travis-ci.com/user/cron-jobs/>`_ to check that we can build
+against current Scipy master.   When trying to fix builds against master, or
+developing new CI build machinery, *please use the ``develop`` branch*.
+
+Builds from the ``daily`` branch upload to a Rackspace container for
+pre-releases at
+https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
+
+Meanwhile, we usually leave the ``master`` branch in a state where it can
+build the last release.
+
+Builds from the ``master`` branch upload to a Rackspace container for releases
+at
+https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+
+Before releasing, we *merge ``daily`` into ``master``*.
+
+Therefore, you will usually want to submit pull requests to the ``daily``
+branch, for testing.
+
 How it works
 ============
 
