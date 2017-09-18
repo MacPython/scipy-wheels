@@ -64,7 +64,7 @@ defined by the manylinux1 standard.
 
 The ``.travis.yml`` file in this repository has a line containing the API key
 for the Rackspace container encrypted with an RSA key that is unique to the
-repository - see http://docs.travis-ci.com/user/encryption-keys.  This
+repository - see https://docs.travis-ci.com/user/encryption-keys.  This
 encrypted key gives the travis build permission to upload to the Rackspace
 containers we use to house the uploads.
 
