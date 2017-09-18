@@ -8,6 +8,9 @@ the travis-ci OSX machines and the travis-ci Linux machines.
 The travis-ci interface for the builds is
 https://travis-ci.org/MacPython/scipy-wheels
 
+Appveyor interface at
+https://ci.appveyor.com/project/scipy/scipy-wheels
+
 The driving github repository is
 https://github.com/MacPython/scipy-wheels
 
@@ -22,7 +25,7 @@ There are two important branches:
 Travis-CI builds the ``daily`` branch - er - daily, via a `Travis-CI cron job
 <https://docs.travis-ci.com/user/cron-jobs/>`_ to check that we can build
 against current Scipy master.   When trying to fix builds against master, or
-developing new CI build machinery, *please use the ``develop`` branch*.
+developing new CI build machinery, *please use the* ``daily`` *branch*.
 
 Builds from the ``daily`` branch upload to a Rackspace container for
 pre-releases at
@@ -51,8 +54,9 @@ The wheel-building repository:
   (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
   libraries into the wheel and relinks the extension modules against the
   copied libraries;
-* uploads the built wheels to http://wheels.scipy.org (a Rackspace container
-  kindly donated by Rackspace to scikit-learn).
+* uploads the built wheels to a Rackspace container - see "Using the
+  repository" above.  The containers were kindly donated by Rackspace to
+  scikit-learn).
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
@@ -62,13 +66,13 @@ The ``.travis.yml`` file in this repository has a line containing the API key
 for the Rackspace container encrypted with an RSA key that is unique to the
 repository - see http://docs.travis-ci.com/user/encryption-keys.  This
 encrypted key gives the travis build permission to upload to the Rackspace
-directory pointed to by http://wheels.scipy.org.
+containers we use to house the uploads.
 
 Triggering a build
 ==================
 
-You will likely want to edit the ``.travis.yml`` file to specify the
-``BUILD_COMMIT`` before triggering a build - see below.
+You will likely want to edit the ``.travis.yml`` and ``appveyor.yml`` files to
+specify the ``BUILD_COMMIT`` before triggering a build - see below.
 
 You will need write permission to the github repository to trigger new builds
 on the travis-ci interface.  Contact us on the mailing list if you need this.
@@ -89,8 +93,9 @@ Which scipy commit does the repository build?
 ===============================================
 
 The `scipy-wheels` repository will build the commit specified in the
-``BUILD_COMMIT`` at the top of the ``.travis.yml`` file.  This can be any
-naming of a commit, including branch name, tag name or commit hash.
+``BUILD_COMMIT`` at the top of the ``.travis.yml`` file and ``appveyor.yml``
+files.  This can be any naming of a commit, including branch name, tag name or
+commit hash.
 
 Note: when making a SciPy release, it's best to only push the commit (not the
 tag) of the release to the ``scipy`` repo, then change ``BUILD_COMMIT`` to the
@@ -101,13 +106,14 @@ of an unexpected build/test issue.
 Uploading the built wheels to pypi
 ==================================
 
-Be careful, http://wheels.scipy.org points to a container on a distributed
-content delivery network.  It can take up to 15 minutes for the new wheel file
-to get updated into the container at http://wheels.scipy.org.
+* pre-releases container visible at
+  https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
+* release container visible at
+  https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
 
-The same contents appear at
-https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com;
-you might prefer this address because it is https.
+Be careful, these links point to containers on a distributed content delivery
+network.  It can take up to 15 minutes for the new wheel file to get updated
+into the containers at the links above.
 
 When the wheels are updated, you can download them to your machine manually,
 and then upload them manually to pypi, or by using twine_.  You can also use a
@@ -121,14 +127,12 @@ You will typically have a directory on your machine where you store wheels,
 called a `wheelhouse`.   The typical call for `wheel-uploader` would then
 be something like::
 
+    VERSION=0.18.0
     CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
-    wheel-uploader -r warehouse -s -v -w ~/wheelhouse -t macosx scipy 0.18.0
-    wheel-uploader -r warehouse -s -v -w ~/wheelhouse -t manylinux1 scipy 0.18.0
+    wheel-uploader -u $CDN_URL -s -v -w ~/wheelhouse -t all scipy $VERSION
 
 where:
 
-* ``-r warehouse`` uses the upcoming Warehouse PyPI server (it is more
-  reliable than the current PyPI service for uploads);
 * ``-u`` gives the URL from which to fetch the wheels, here the https address,
   for some extra security;
 * ``-s`` causes twine to sign the wheels with your GPG key;
@@ -139,25 +143,19 @@ where:
 ``scipy`` is the root name of the wheel(s) to download / upload, and
 ``0.18.0`` is the version to download / upload.
 
-In order to use the Warehouse PyPI server, you will need something like this
+In order to upload the wheels, you will need something like this
 in your ``~/.pypirc`` file::
 
     [distutils]
     index-servers =
         pypi
-        warehouse
 
     [pypi]
     username:your_user_name
     password:your_password
 
-    [warehouse]
-    repository: https://upload.pypi.io/legacy/
-    username: your_user_name
-    password: your_password
-
-So, in this case, ``wheel-uploader`` will download all wheels starting with
-``scipy-0.18.0-`` from http://wheels.scipy.org to ``~/wheelhouse``, then
+So, in this case, `wheel-uploader` will download all wheels starting with
+`scipy-0.18.0-` from the URL in ``$CDN_URL`` above to ``~/wheelhouse``, then
 upload them to PyPI.
 
 Of course, you will need permissions to upload to PyPI, for this to work.
