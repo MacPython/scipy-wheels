@@ -51,8 +51,8 @@ The wheel-building repository:
   (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
   libraries into the wheel and relinks the extension modules against the
   copied libraries;
-* uploads the built wheels to http://wheels.scipy.org (a Rackspace container
-  kindly donated by Rackspace to scikit-learn).
+* uploads the built wheels to a Rackspace container
+  kindly donated by Rackspace to scikit-learn (see below).
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
@@ -60,9 +60,9 @@ defined by the manylinux1 standard.
 
 The ``.travis.yml`` file in this repository has a line containing the API key
 for the Rackspace container encrypted with an RSA key that is unique to the
-repository - see http://docs.travis-ci.com/user/encryption-keys.  This
+repository - see https://docs.travis-ci.com/user/encryption-keys.  This
 encrypted key gives the travis build permission to upload to the Rackspace
-directory pointed to by http://wheels.scipy.org.
+directory.
 
 Triggering a build
 ==================
@@ -101,13 +101,12 @@ of an unexpected build/test issue.
 Uploading the built wheels to pypi
 ==================================
 
-Be careful, http://wheels.scipy.org points to a container on a distributed
-content delivery network.  It can take up to 15 minutes for the new wheel file
-to get updated into the container at http://wheels.scipy.org.
+The Rackspace container is available at
+https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
 
-The same contents appear at
-https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com;
-you might prefer this address because it is https.
+Be careful, it points to a container on a distributed content delivery
+network.  It can take up to 15 minutes for the new wheel file to get
+updated into the container.
 
 When the wheels are updated, you can download them to your machine manually,
 and then upload them manually to pypi, or by using twine_.  You can also use a
@@ -157,10 +156,13 @@ in your ``~/.pypirc`` file::
     password: your_password
 
 So, in this case, ``wheel-uploader`` will download all wheels starting with
-``scipy-0.18.0-`` from http://wheels.scipy.org to ``~/wheelhouse``, then
+``scipy-0.18.0-`` from the container to ``~/wheelhouse``, then
 upload them to PyPI.
 
 Of course, you will need permissions to upload to PyPI, for this to work.
+
+(Note: the rackspace also has an alias ``wheels.scipy.org`` --- but
+that does not support https and must not be used.)
 
 .. _manylinux1: https://www.python.org/dev/peps/pep-0513
 .. _twine: https://pypi.python.org/pypi/twine
