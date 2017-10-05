@@ -184,8 +184,8 @@ build_script:
   # * Python 2.7
   - mkdir build\lib.win32-2.7\scipy\extra-dll
   - mkdir build\lib.win-amd64-2.7\scipy\extra-dll
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT\msvcp90.dll" "build\lib.win32-2.7\scipy\extra-dll\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\redist\amd64\Microsoft.VC90.CRT\msvcp90.dll" "build\lib.win-amd64-2.7\scipy\extra-dll\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\redist\x86\Microsoft.VC90.CRT"\*.* "build\lib.win32-2.7\scipy\extra-dll\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\redist\amd64\Microsoft.VC90.CRT"\*.* "build\lib.win-amd64-2.7\scipy\extra-dll\"
   # Build wheel using setup.py
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
