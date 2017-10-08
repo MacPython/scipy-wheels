@@ -216,7 +216,8 @@ test_script:
   - mkdir tmp_test
   - cd tmp_test
   - python ..\check_license.py
-  - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
+  - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\..\junit-results.xml -rfEX
+  - cd ..
 
 after_test:
   # Upload test results to Appveyor
