@@ -57,12 +57,14 @@ function run_tests {
     # Runs tests on installed distribution from an empty directory
     # OSX tests seem to time out pretty often
     if [ -z "$IS_OSX" ]; then
-        local extra="full"
+        local testmode="full"
+    else
+        local testmode="fast"
     fi
     # Check bundled license file
     python ../check_license.py
     # Run tests
-    python ../run_scipy_tests.py $extra
+    python ../run_scipy_tests.py $testmode -- -n2 -rfEX
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
 }
