@@ -217,7 +217,7 @@ test_script:
   - cd tmp_test
   - python ..\check_license.py
   - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\..\junit-results.xml -rfEX
-  - cd ..
+  - cd ..\scipy
 
 after_test:
   # Upload test results to Appveyor
