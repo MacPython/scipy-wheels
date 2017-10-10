@@ -212,8 +212,11 @@ before_test:
   - python -m pip install "%NUMPY_TEST_DEP%"
 
 test_script:
+  - cd ..
+  - mkdir tmp_test
+  - cd tmp_test
   - python ..\check_license.py
-  - python runtests.py -n -m %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
+  - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
   # Upload test results to Appveyor
@@ -243,6 +246,7 @@ on_success:
   # Upload the generated wheel package to Rackspace
   # On Windows, Apache Libcloud cannot find a standard CA cert bundle so we
   # disable the ssl checks.
+  - cd ..\scipy
   - pip install wheelhouse-uploader
   - python -m wheelhouse_uploader upload
     --no-ssl-check --local-folder=dist
