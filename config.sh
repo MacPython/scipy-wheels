@@ -36,9 +36,8 @@ function set_arch {
 }
 
 function build_osx_wheel {
-    # Build dual arch wheel
-    # Standard gfortran won't build dual arch objects, so we have to build two
-    # wheels, one for 32-bit, one for 64, then fuse them.
+    # Build 64-bit wheel
+    # Standard gfortran won't build dual arch objects.
     local repo_dir=${1:-$REPO_DIR}
     local py_ld_flags="-Wall -undefined dynamic_lookup -bundle"
 
