@@ -42,7 +42,7 @@ function build_osx_wheel {
     local repo_dir=${1:-$REPO_DIR}
     local py_ld_flags="-Wall -undefined dynamic_lookup -bundle"
 
-    install_gfortran
+    HOMEBREW_NO_AUTO_UPDATE=1 brew install gcc
     # 64-bit wheel
     local arch="-m64"
     set_arch $arch
