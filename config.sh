@@ -7,8 +7,6 @@ PYTHONFAULTHANDLER=1
 # OpenBLAS version for systems that use it.
 OPENBLAS_VERSION=0.2.18
 
-source gfortran-install/gfortran_utils.sh
-
 function build_wheel {
     if [ -z "$IS_OSX" ]; then
         build_libs $PLAT
@@ -42,7 +40,7 @@ function build_osx_wheel {
     local repo_dir=${1:-$REPO_DIR}
     local py_ld_flags="-Wall -undefined dynamic_lookup -bundle"
 
-    install_gfortran
+    brew install gcc
     # 64-bit wheel
     local arch="-m64"
     set_arch $arch
