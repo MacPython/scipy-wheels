@@ -7,6 +7,8 @@ PYTHONFAULTHANDLER=1
 # OpenBLAS version for systems that use it.
 OPENBLAS_VERSION=0.2.18
 
+source gfortran-install/gfortran_utils.sh
+
 function build_wheel {
     if [ -z "$IS_OSX" ]; then
         build_libs $PLAT
