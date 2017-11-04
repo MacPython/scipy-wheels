@@ -14,7 +14,7 @@ env:
         # travis encrypt -r MacPython/scipy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
         - secure:
             "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
-        # Commit when running from daily branch
+        # Commit when running from master branch
         - DAILY_COMMIT=master
 
 language: python
@@ -103,7 +103,7 @@ matrix:
         - NP_TEST_DEP=numpy==1.11.3
 
 before_install:
-    - if [ "$TRAVIS_BRANCH" == "daily" ]; then
+    - if [ "$TRAVIS_BRANCH" == "master" ]; then
           CONTAINER="pre-release";
           BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
       else
