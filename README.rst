@@ -17,31 +17,26 @@ https://github.com/MacPython/scipy-wheels
 Using the repository
 ====================
 
-There are two important branches:
+The repository contains the branches:
 
-* ``master`` - for building releases;
-* ``daily`` - for daily builds.
+* ``master`` - for development and daily builds;
+* ``vx.y.z`` - for building releases.
 
-Travis-CI builds the ``daily`` branch - er - daily, via a `Travis-CI cron job
-<https://docs.travis-ci.com/user/cron-jobs/>`_ to check that we can build
-against current Scipy master.   When trying to fix builds against master, or
-developing new CI build machinery, *please use the* ``daily`` *branch*.
+Travis-CI and Appveyor builds the ``master`` regularly (daily/weekly),
+via `Travis-CI cron jobs
+<https://docs.travis-ci.com/user/cron-jobs/>`_ and `Appveyor scheduled
+builds
+<https://www.appveyor.com/docs/build-configuration/#scheduled-builds>`.
 
-Builds from the ``daily`` branch upload to a Rackspace container for
+Builds from the ``master`` branch upload to a Rackspace container for
 pre-releases at
 https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
 
-Meanwhile, we usually leave the ``master`` branch in a state where it can
-build the last release.
-
-Builds from the ``master`` branch upload to a Rackspace container for releases
+Builds from the release branches upload to a Rackspace container for releases
 at
 https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
 
-Before releasing, we *merge ``daily`` into ``master``*.
-
-Therefore, you will usually want to submit pull requests to the ``daily``
-branch, for testing.
+Pull requests should usually be submitted to the ``master`` branch.
 
 How it works
 ============
@@ -73,6 +68,9 @@ Triggering a build
 
 You will likely want to edit the ``.travis.yml`` and ``appveyor.yml`` files to
 specify the ``BUILD_COMMIT`` before triggering a build - see below.
+
+For releases, use an existing release branch, or push a new release
+branch to the repository.
 
 You will need write permission to the github repository to trigger new builds
 on the travis-ci interface.  Contact us on the mailing list if you need this.
