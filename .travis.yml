@@ -111,7 +111,9 @@ before_install:
           UPLOAD_ARGS="--no-update-index";
       fi
     - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP"
-    - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
+    # Pin pip version to <10 for multibuild compatibility
+    - TEST_DEPENDS="$NP_TEST_DEP pip==9.0.3 pytest pytest-xdist pytest-faulthandler pytest-env"
+    - sed -i -e 's/pip install --upgrade pip/pip install --upgrade "pip<10"/' multibuild/travis_*_steps.sh
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
