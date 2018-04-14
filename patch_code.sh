@@ -14,3 +14,10 @@ if [ -z "$IS_OSX" ]; then
 else
     cat LICENSE_osx.txt >> $repo_dir/LICENSE.txt
 fi
+
+# Remove pyproject.toml so that pip doesn't try to use it
+pyproject_toml="$repo_dir/pyproject.toml"
+if [ -f "$pyproject_toml" ]; then
+    echo "pyproject.toml is present: removing it"
+    rm "$pyproject_toml"
+fi
