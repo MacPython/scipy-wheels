@@ -16,7 +16,7 @@ environment:
       OPENBLAS_64: https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-5f998ef_gcc7_1_0_win64.zip
       OPENBLAS_32_SHA256: 0a12804b08d475179a0411936f509b44d7512f084b4a81c2fa3abe8c9ac4ee09
       OPENBLAS_64_SHA256: 8f11d8a5a79795a3a1ccb2326c979a0ca426e623eee93f8e35239e3c21e62cd6
-      CYTHON_BUILD_DEP: Cython==0.26.1
+      CYTHON_BUILD_DEP: Cython==0.28.2
       NUMPY_TEST_DEP: numpy==1.13.1
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -25,7 +25,7 @@ environment:
       WHEELHOUSE_UPLOADER_SECRET:
         secure:
             jIyaD+VWmTlDGXThsKAkiLq8iljgYHiriq+kEUuW9tHj67R5BapLxLjbfco2nt8Y
-      BUILD_COMMIT: 9f479a5ee15a26f4fc80873f73fd8d1bd349613d
+      BUILD_COMMIT: 4b50fdea8ec841106f071c368802ccc4a9cc2d54
       DAILY_COMMIT: master
 
   matrix:
