@@ -10,11 +10,13 @@ OPENBLAS_VERSION=0.2.18
 source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
-  export FFLAGS="$FFLAGS -fPIC -Wl,-strip-all"
     if [ -z "$IS_OSX" ]; then
+        unset FFLAGS
+        export LDFLAGS="-shared -Wl,-strip-all"
         build_libs $PLAT
         build_pip_wheel $@
     else
+        export FFLAGS="$FFLAGS -fPIC"
         build_osx_wheel $@
     fi
 }
