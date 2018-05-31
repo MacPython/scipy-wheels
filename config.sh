@@ -1,12 +1,6 @@
 # Define custom utilities
 # Test for OSX with [ -n "$IS_OSX" ]
-
-# Enable Python fault handler on Pythons >= 3.3.
-PYTHONFAULTHANDLER=1
-
-# OpenBLAS version for systems that use it.
-OPENBLAS_VERSION=0.2.18
-
+# See env_vars.sh for extra environment variables
 source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
@@ -22,10 +16,12 @@ function build_wheel {
 }
 
 function build_libs {
-    if [ -n "$IS_OSX" ]; then return; fi  # No OpenBLAS for OSX
     local plat=${1:-$PLAT}
     local tar_path=$(abspath $(get_gf_lib "openblas-${OPENBLAS_VERSION}" "$plat"))
-    (cd / && tar zxf $tar_path)
+    # Sudo needed for macOS
+    local use_sudo=""
+    [ -n "$IS_OSX" ] && use_sudo="sudo"
+    (cd / && $use_sudo tar zxf $tar_path)
 }
 
 function set_arch {
