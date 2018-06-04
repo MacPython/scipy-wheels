@@ -8,7 +8,8 @@ function build_wheel {
         unset FFLAGS
         export LDFLAGS="-shared -Wl,-strip-all"
         build_libs $PLAT
-        build_pip_wheel $@
+        # Work round build dependencies spec in pyproject.toml
+        build_bdist_wheel $@
     else
         export FFLAGS="$FFLAGS -fPIC"
         build_osx_wheel $@
@@ -48,7 +49,10 @@ function build_osx_wheel {
     # Build wheel
     export LDSHARED="$CC $py_ld_flags"
     export LDFLAGS="$arch $py_ld_flags"
-    build_pip_wheel "$repo_dir"
+    # Work round build dependencies spec in pyproject.toml
+    # See e.g.
+    # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
+    build_bdist_wheel "$repo_dir"
 }
 
 function run_tests {
