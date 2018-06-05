@@ -22,7 +22,7 @@ function build_libs {
     # Sudo needed for macOS
     local use_sudo=""
     [ -n "$IS_OSX" ] && use_sudo="sudo"
-    (cd / && $use_sudo tar zxf $tar_path)
+    (cd / && $use_sudo tar zxvf $tar_path)
 }
 
 function set_arch {
