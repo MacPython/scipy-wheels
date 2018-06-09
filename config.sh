@@ -1,12 +1,6 @@
 # Define custom utilities
 # Test for OSX with [ -n "$IS_OSX" ]
-
-# Enable Python fault handler on Pythons >= 3.3.
-PYTHONFAULTHANDLER=1
-
-# OpenBLAS version for systems that use it.
-OPENBLAS_VERSION=0.2.18
-
+# See env_vars.sh for extra environment variables
 source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
@@ -14,7 +8,8 @@ function build_wheel {
         unset FFLAGS
         export LDFLAGS="-shared -Wl,-strip-all"
         build_libs $PLAT
-        build_pip_wheel $@
+        # Work round build dependencies spec in pyproject.toml
+        build_bdist_wheel $@
     else
         export FFLAGS="$FFLAGS -fPIC"
         build_osx_wheel $@
@@ -22,10 +17,12 @@ function build_wheel {
 }
 
 function build_libs {
-    if [ -n "$IS_OSX" ]; then return; fi  # No OpenBLAS for OSX
     local plat=${1:-$PLAT}
     local tar_path=$(abspath $(get_gf_lib "openblas-${OPENBLAS_VERSION}" "$plat"))
-    (cd / && tar zxf $tar_path)
+    # Sudo needed for macOS
+    local use_sudo=""
+    [ -n "$IS_OSX" ] && use_sudo="sudo"
+    (cd / && $use_sudo tar zxf $tar_path)
 }
 
 function set_arch {
@@ -36,6 +33,12 @@ function set_arch {
     export FFLAGS="$arch"
     export FARCH="$arch"
     export LDFLAGS="$arch"
+}
+
+function build_wheel_with_patch {
+    # Patch numpy distutils to fix OpenBLAS build
+    (cd .. && ./patch_numpy.sh)
+    bdist_wheel_cmd $@
 }
 
 function build_osx_wheel {
@@ -52,7 +55,10 @@ function build_osx_wheel {
     # Build wheel
     export LDSHARED="$CC $py_ld_flags"
     export LDFLAGS="$arch $py_ld_flags"
-    build_pip_wheel "$repo_dir"
+    # Work round build dependencies spec in pyproject.toml
+    # See e.g.
+    # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
+    build_wheel_cmd "build_wheel_with_patch" "$repo_dir"
 }
 
 function run_tests {
