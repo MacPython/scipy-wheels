@@ -29,6 +29,18 @@ environment:
       DAILY_COMMIT: master
 
   matrix:
+    - PYTHON: C:\Python37
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 32
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      CYTHON_BUILD_DEP: Cython
+
+    - PYTHON: C:\Python37-x64
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 64
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      CYTHON_BUILD_DEP: Cython
+
     - PYTHON: C:\Python36
       PYTHON_VERSION: 3.6
       PYTHON_ARCH: 32
@@ -89,6 +101,8 @@ install:
   - echo "Installed SDKs:"
   - dir "C:/Program Files/Microsoft SDKs/Windows"
 
+  # Install Python 3.7.0 if necessary
+  - ps: .\tools\install_python370.ps1
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).
@@ -132,7 +146,7 @@ install:
           throw "Downloaded OPENBLAS zip SHA256 does not match."
       }
 
-      Expand-Archive $file $tmpdir      
+      Expand-Archive $file $tmpdir
 
       rm $tmpdir\$PYTHON_ARCH\lib\*.dll.a
       $lib = ls $tmpdir\$PYTHON_ARCH\lib\*.a | ForEach { ls $_ } | Select-Object -first 1
@@ -190,7 +204,7 @@ build_script:
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
       If ($PYTHON_ARCH -eq 32) {
-          $MINGW = $env:MINGW_32 
+          $MINGW = $env:MINGW_32
       } Else {
           $MINGW = $env:MINGW_64
       }
