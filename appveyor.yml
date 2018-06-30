@@ -25,10 +25,22 @@ environment:
       WHEELHOUSE_UPLOADER_SECRET:
         secure:
             jIyaD+VWmTlDGXThsKAkiLq8iljgYHiriq+kEUuW9tHj67R5BapLxLjbfco2nt8Y
-      BUILD_COMMIT: 14142ff70d84a6ce74044a27919c850e893648f7
+      BUILD_COMMIT: v1.1.0
       DAILY_COMMIT: master
 
   matrix:
+    - PYTHON: C:\Python37
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 32
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      CYTHON_BUILD_DEP: Cython
+
+    - PYTHON: C:\Python37-x64
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 64
+      NUMPY_BUILD_DEP: numpy==1.14.5
+      CYTHON_BUILD_DEP: Cython
+
     - PYTHON: C:\Python36
       PYTHON_VERSION: 3.6
       PYTHON_ARCH: 32
@@ -89,6 +101,8 @@ install:
   - echo "Installed SDKs:"
   - dir "C:/Program Files/Microsoft SDKs/Windows"
 
+  # Install Python 3.7.0 if necessary
+  - ps: .\tools\install_python370.ps1
   # Prepend newly installed Python to the PATH of this build (this cannot be
   # done from inside the powershell script as it would require to restart
   # the parent CMD process).

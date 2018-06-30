@@ -2,7 +2,7 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=14142ff70d84a6ce74044a27919c850e893648f7
+        - BUILD_COMMIT=v1.1.0
         - PLAT=x86_64
         - NP_BUILD_DEP="numpy==1.8.2"
         - CYTHON_BUILD_DEP="Cython==0.28.2"
@@ -77,6 +77,19 @@ matrix:
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
     - os: osx
       language: generic
       env:
@@ -101,6 +114,13 @@ matrix:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.11.3
         - NP_TEST_DEP=numpy==1.11.3
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
@@ -129,7 +149,17 @@ script:
 
 after_success:
     # Upload wheels to Rackspace container
-    - pip install wheelhouse-uploader
+    # Upload may not work for Python 3.7:
+    # https://github.com/ogrisel/wheelhouse-uploader/issues/27
+    - |
+      if [ -n "$IS_OSX" ]; then
+        # Use system Python
+        deactivate
+        curl -LO https://bootstrap.pypa.io/get-pip.py
+        sudo python get-pip.py
+        WH_PIP_OPTS="--user"
+      fi
+    - pip install $WH_PIP_OPTS wheelhouse-uploader
     - python -m wheelhouse_uploader upload --local-folder
           ${TRAVIS_BUILD_DIR}/wheelhouse/
           $UPLOAD_ARGS
