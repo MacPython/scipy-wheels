@@ -150,7 +150,7 @@ after_success:
     # Upload may not work for Python 3.7:
     # https://github.com/ogrisel/wheelhouse-uploader/issues/27
     - pip install wheelhouse-uploader
-    - python -m wheelhouse_uploader upload --local-folder
+    - travis_wait python -m wheelhouse_uploader upload --local-folder
           ${TRAVIS_BUILD_DIR}/wheelhouse/
           $UPLOAD_ARGS
           $CONTAINER
