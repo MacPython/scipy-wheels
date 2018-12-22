@@ -4,9 +4,9 @@ env:
         # Also see DAILY_COMMIT below
         - BUILD_COMMIT=722bfc3f
         - PLAT=x86_64
-        - NP_BUILD_DEP="numpy==1.8.2"
+        - NP_BUILD_DEP="numpy==1.13.3"
         - CYTHON_BUILD_DEP="Cython==0.29.0"
-        - NP_TEST_DEP="numpy==1.8.2"
+        - NP_TEST_DEP="numpy==1.13.3"
         - UNICODE_WIDTH=32
         - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
         - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
@@ -31,52 +31,26 @@ matrix:
   include:
     - os: linux
       env:
-        - MB_PYTHON_VERSION=2.7
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - UNICODE_WIDTH=16
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=i686
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=2.7
-        - PLAT=i686
-        - UNICODE_WIDTH=16
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.4
-        # Python 3.4 needs more recent numpy (for testing only)
-        - NP_TEST_DEP=numpy==1.9.3
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.4
-        - PLAT=i686
-        - NP_TEST_DEP=numpy==1.9.3
-    - os: linux
-      env:
         - MB_PYTHON_VERSION=3.5
-        - NP_BUILD_DEP=numpy==1.9.3
-        - NP_TEST_DEP=numpy==1.9.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.5
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.9.3
-        - NP_TEST_DEP=numpy==1.9.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.7
@@ -93,27 +67,15 @@ matrix:
     - os: osx
       language: generic
       env:
-        - MB_PYTHON_VERSION=2.7
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.4
-        - NP_TEST_DEP=numpy==1.9.3
-    - os: osx
-      language: generic
-      env:
         - MB_PYTHON_VERSION=3.5
-        # OSX build of scipy on Python 3.5 needs built 1.8.2 wheel to avoid
-        # https://github.com/numpy/numpy/issues/6204.  numpy 1.8.2 wheel for
-        # Python 3.5 at nipy manylinux URL.
-        - NP_BUILD_DEP=numpy==1.8.2
-        - NP_TEST_DEP=numpy==1.9.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: osx
       language: generic
       env:
         - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.11.3
-        - NP_TEST_DEP=numpy==1.11.3
+        - NP_BUILD_DEP=numpy==1.13.3
+        - NP_TEST_DEP=numpy==1.13.3
     - os: osx
       language: generic
       env:
