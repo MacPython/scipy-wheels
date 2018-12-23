@@ -17,7 +17,7 @@ environment:
       OPENBLAS_32_SHA256: 4d8ebb7deb23e9aa39837087a8e41ac4cc0c0e44fa60861e1568e974bdbd7be6
       OPENBLAS_64_SHA256: e1bea2d94fe1c54c3cd1da62440a7975826427bc2dd55e67d064059632ddf323
       CYTHON_BUILD_DEP: Cython==0.29.0
-      NUMPY_TEST_DEP: numpy==1.13.1
+      NUMPY_TEST_DEP: numpy==1.13.3
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
       APPVEYOR_SKIP_FINALIZE_ON_EXIT: true
@@ -46,42 +46,22 @@ environment:
     - PYTHON: C:\Python36
       PYTHON_VERSION: 3.6
       PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.12.1
+      NUMPY_BUILD_DEP: numpy==1.13.3
 
     - PYTHON: C:\Python36-x64
       PYTHON_VERSION: 3.6
       PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.12.1
+      NUMPY_BUILD_DEP: numpy==1.13.3
 
     - PYTHON: C:\Python35
       PYTHON_VERSION: 3.5
       PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.10.4
+      NUMPY_BUILD_DEP: numpy==1.13.3
 
     - PYTHON: C:\Python35-x64
       PYTHON_VERSION: 3.5
       PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.10.4
-
-    - PYTHON: C:\Python34
-      PYTHON_VERSION: 3.4
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.10.4
-
-    - PYTHON: C:\Python34-x64
-      PYTHON_VERSION: 3.4
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.10.4
-
-    - PYTHON: C:\Python27
-      PYTHON_VERSION: 2.7
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.10.4
-
-    - PYTHON: C:\Python27-x64
-      PYTHON_VERSION: 2.7
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.10.4
+      NUMPY_BUILD_DEP: numpy==1.13.3
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
