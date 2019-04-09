@@ -16,7 +16,7 @@ environment:
       OPENBLAS_64: "https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-v0.3.3-186-g701ea883-win_amd64-gcc_7_1_0.zip"
       OPENBLAS_32_SHA256: de77d0f239bca96b1c9206e1f59507559c7a4c98b1e11d3650c85827bb760666
       OPENBLAS_64_SHA256: 1aad347e9232632b7e8ab785cdfcc5714be7f1193980b9115335c7b3bcdd993b
-      CYTHON_BUILD_DEP: Cython==0.29.0
+      CYTHON_BUILD_DEP: Cython==0.29.2
       NUMPY_TEST_DEP: numpy==1.13.3
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
