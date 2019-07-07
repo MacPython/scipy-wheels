@@ -18,6 +18,7 @@ environment:
       OPENBLAS_64_SHA256: 5a8875d76658cb5dc27d79ced7c66bd27d2356d52bdac9fbae2c1ee8b4b20750
       CYTHON_BUILD_DEP: Cython==0.29.2
       NUMPY_TEST_DEP: numpy==1.13.3
+      PYBIND11_BUILD_DEP: pybind11==2.3.0
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
       APPVEYOR_SKIP_FINALIZE_ON_EXIT: true
@@ -144,7 +145,7 @@ install:
   - python -m pip install -U pip setuptools wheel
 
   # Install build requirements.
-  - pip install "%CYTHON_BUILD_DEP%" "%NUMPY_BUILD_DEP%"
+  - pip install "%CYTHON_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran.
   - ps: |
