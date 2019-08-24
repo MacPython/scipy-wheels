@@ -12,10 +12,10 @@ environment:
   global:
       MINGW_32: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
       MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
-      OPENBLAS_32: "https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-v0.3.5-274-g6a8b4269-win32-gcc_7_1_0.zip"
-      OPENBLAS_64: "https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-v0.3.5-274-g6a8b4269-win_amd64-gcc_7_1_0.zip"
-      OPENBLAS_32_SHA256: 45339f90ba2490cba88beff050f7291ed6337a44af5f611c203fd4d5f7f9dadb
-      OPENBLAS_64_SHA256: 5a8875d76658cb5dc27d79ced7c66bd27d2356d52bdac9fbae2c1ee8b4b20750
+      OPENBLAS_32: "https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-v0.3.7-win32-gcc_7_1_0.zip"
+      OPENBLAS_64: "https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-v0.3.7-win_amd64-gcc_7_1_0.zip"
+      OPENBLAS_32_SHA256: 5272f4acc06acd79b02b99d193ef94036ba6042966638fcd5548c70537bcabdd
+      OPENBLAS_64_SHA256: 4d496081543c61bfb8069c1a12dfc2c0371cf9c59f9a4488e2e416dd4026357e
       CYTHON_BUILD_DEP: Cython==0.29.2
       NUMPY_TEST_DEP: numpy==1.13.3
       PYBIND11_BUILD_DEP: pybind11==2.3.0
