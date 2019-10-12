@@ -76,3 +76,14 @@ function run_tests {
     # Show BLAS / LAPACK used
     python -c 'import scipy; scipy.show_config()'
 }
+
+function install_run {
+    # Override multibuild test running command, to preinstall packages
+    # that have to be installed before TEST_DEPENDS.
+    pip install $(pip_opts) setuptools_scm
+
+    # Copypaste from multibuild/common_utils.sh:install_run
+    install_wheel
+    mkdir tmp_for_test
+    (cd tmp_for_test && run_tests)
+}
