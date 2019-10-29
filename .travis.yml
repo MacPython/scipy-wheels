@@ -60,6 +60,19 @@ matrix:
         - CYTHON_BUILD_DEP="Cython"
     - os: linux
       env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.14.5
@@ -84,6 +97,15 @@ matrix:
         - NP_BUILD_DEP=numpy==1.14.5
         - NP_TEST_DEP=numpy==1.14.5
         - CYTHON_BUILD_DEP="Cython"
+    - os: osx
+      language: generic
+      osx_image: xcode10.1
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+        - MB_PYTHON_OSX_VER=10.9
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
