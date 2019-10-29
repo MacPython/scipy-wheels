@@ -3,7 +3,7 @@
 	url = git://github.com/numpy/numpy.git
 [submodule "scipy"]
 	path = scipy
-	url = git://github.com/scipy/scipy.git
+	url = git://github.com/rlucas7/scipy.git
 [submodule "multibuild"]
 	path = multibuild
 	url = https://github.com/matthew-brett/multibuild.git
