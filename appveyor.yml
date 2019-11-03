@@ -162,11 +162,14 @@ install:
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran.
   - ps: |
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -ne 3.8) {
       $NumpyDir = $((python -c 'import os; import numpy; print(os.path.dirname(numpy.__file__))') | Out-String).Trim()
       rm -r -Force "$NumpyDir\distutils"
       mv numpy-distutils\numpy\distutils $NumpyDir
       rm -r -Force "$NumpyDir\compat"
       mv numpy-distutils\numpy\compat $NumpyDir
+      }
 
 build_script:
   - cd scipy
