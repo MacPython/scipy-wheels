@@ -174,6 +174,15 @@ install:
 build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
+  # we use a distribution file to assist in loading
+  # DLLs with recent NumPy versions
+  - ps: |
+      cd ..
+      $cwd = Get-Location
+      ls $cwd
+      rm -Force $cwd/scipy/scipy/_distributor_init.py
+      mv $cwd/_distributor_init.py $cwd/scipy/scipy/
+      cd scipy
   # Append license text relevant for the built wheel
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
@@ -208,7 +217,14 @@ build_script:
 
 before_test:
   # Install test requirements.
-  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath matplotlib==3.2.0rc1
+  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath
+  - ps: |
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -eq 3.8) {
+          python -m pip install matplotlib==3.2.0rc1
+      } Else {
+          python -m pip install matplotlib
+      }
 
   # Upgrade numpy to the version used for testing
   - python -m pip install "%NUMPY_TEST_DEP%"
