@@ -175,14 +175,17 @@ build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
   # we use a distribution file to assist in loading
-  # DLLs with recent NumPy versions
+  # DLLs with recent Python versions (>= 3.8)
   - ps: |
-      cd ..
-      $cwd = Get-Location
-      ls $cwd
-      rm -Force $cwd/scipy/scipy/_distributor_init.py
-      mv $cwd/_distributor_init.py $cwd/scipy/scipy/
-      cd scipy
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -eq 3.8) {
+          cd ..
+          $cwd = Get-Location
+          ls $cwd
+          rm -Force $cwd/scipy/scipy/_distributor_init.py
+          mv $cwd/_distributor_init.py $cwd/scipy/scipy/
+          cd scipy
+      }
   # Append license text relevant for the built wheel
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
