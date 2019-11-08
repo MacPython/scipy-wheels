@@ -20,7 +20,7 @@ if os.name == 'nt':
     # convention for storing / loading the DLL from
     # scipy/.libs/, if present
     libs_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
-                                             '..', '.libs'))
+                                             '.libs'))
     if os.path.isdir(libs_path):
         for filename in glob.glob(os.path.join(libs_path, '*dll')):
             WinDLL(os.path.abspath(filename))
