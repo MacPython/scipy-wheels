@@ -116,6 +116,13 @@ before_install:
       fi
     - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP"
     - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        if [ "$MB_PYTHON_VERSION" == "3.7" ]; then  
+            cd multibuild;
+            git checkout 65fd07a180046b4473b21e9084e01f1bf1a8dfac;
+            cd ..;
+        fi
+      fi
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
