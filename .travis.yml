@@ -2,10 +2,10 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=4bfc152
+        - BUILD_COMMIT=7f8a742
         - PLAT=x86_64
         - NP_BUILD_DEP="numpy==1.13.3"
-        - CYTHON_BUILD_DEP="Cython==0.29.2"
+        - CYTHON_BUILD_DEP="Cython==0.29.13"
         - NP_TEST_DEP="numpy==1.13.3"
         - UNICODE_WIDTH=32
         - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
@@ -59,6 +59,19 @@ matrix:
         - CYTHON_BUILD_DEP="Cython"
     - os: linux
       env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=i686
         - NP_BUILD_DEP=numpy==1.14.5
@@ -83,6 +96,15 @@ matrix:
         - NP_BUILD_DEP=numpy==1.14.5
         - NP_TEST_DEP=numpy==1.14.5
         - CYTHON_BUILD_DEP="Cython"
+    - os: osx
+      language: generic
+      osx_image: xcode10.1
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+        - MB_PYTHON_OSX_VER=10.9
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
@@ -94,6 +116,13 @@ before_install:
       fi
     - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP"
     - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
+    - if [ "$TRAVIS_OS_NAME" == "osx" ]; then
+        if [ "$MB_PYTHON_VERSION" == "3.7" ]; then  
+            cd multibuild;
+            git checkout 65fd07a180046b4473b21e9084e01f1bf1a8dfac;
+            cd ..;
+        fi
+      fi
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
