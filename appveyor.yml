@@ -30,6 +30,20 @@ environment:
       DAILY_COMMIT: master
 
   matrix:
+    - PYTHON: C:\Python38
+      PYTHON_VERSION: 3.8
+      PYTHON_ARCH: 32
+      NUMPY_BUILD_DEP: numpy==1.17.3
+      NUMPY_TEST_DEP: numpy==1.17.3
+      CYTHON_BUILD_DEP: Cython
+
+    - PYTHON: C:\Python38-x64
+      PYTHON_VERSION: 3.8
+      PYTHON_ARCH: 64
+      NUMPY_BUILD_DEP: numpy==1.17.3
+      NUMPY_TEST_DEP: numpy==1.17.3
+      CYTHON_BUILD_DEP: Cython
+
     - PYTHON: C:\Python37
       PYTHON_VERSION: 3.7
       PYTHON_ARCH: 32
@@ -149,15 +163,30 @@ install:
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran.
   - ps: |
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -ne 3.8) {
       $NumpyDir = $((python -c 'import os; import numpy; print(os.path.dirname(numpy.__file__))') | Out-String).Trim()
       rm -r -Force "$NumpyDir\distutils"
       mv numpy-distutils\numpy\distutils $NumpyDir
       rm -r -Force "$NumpyDir\compat"
       mv numpy-distutils\numpy\compat $NumpyDir
+      }
 
 build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
+  # we use a distribution file to assist in loading
+  # DLLs with recent Python versions (>= 3.8)
+  - ps: |
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -eq 3.8) {
+          cd ..
+          $cwd = Get-Location
+          ls $cwd
+          rm -Force $cwd/scipy/scipy/_distributor_init.py
+          mv $cwd/_distributor_init.py $cwd/scipy/scipy/
+          cd scipy
+      }
   # Append license text relevant for the built wheel
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
@@ -190,7 +219,14 @@ build_script:
 
 before_test:
   # Install test requirements.
-  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath matplotlib
+  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath
+  - ps: |
+      $PYTHON_VERSION = $env:PYTHON_VERSION
+      If ($PYTHON_VERSION -eq 3.8) {
+          python -m pip install matplotlib==3.2.0rc1
+      } Else {
+          python -m pip install matplotlib
+      }
 
   # Upgrade numpy to the version used for testing
   - python -m pip install "%NUMPY_TEST_DEP%"
