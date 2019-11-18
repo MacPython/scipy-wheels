@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 """
-check_license.py [MODULE]
+check_installed_package.py [MODULE]
 
 Check the presence of a LICENSE.txt in the installed module directory,
 and that it appears to contain text prevalent for a Scipy binary
 distribution.
+
+On Windows, also check that all DLLs packaged in the SciPy
+wheel reside at the same path---see gh-57.
 
 """
 import os
@@ -12,6 +15,7 @@ import sys
 import io
 import re
 import argparse
+import platform
 from pathlib import Path
 
 def check_text(text):
@@ -65,7 +69,9 @@ def main():
         sys.exit(1)
 
 
-    check_dll_paths(mod)
+    if platform.system() == 'Windows':
+        check_dll_paths(mod)
+
     sys.exit(0)
 
 

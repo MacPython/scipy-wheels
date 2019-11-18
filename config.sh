@@ -70,7 +70,7 @@ function run_tests {
         local testmode="fast"
     fi
     # Check bundled license file
-    python ../check_license.py
+    python ../check_installed_package.py
     # Run tests
     python ../run_scipy_tests.py $testmode -- -n2 -rfEX
     # Show BLAS / LAPACK used

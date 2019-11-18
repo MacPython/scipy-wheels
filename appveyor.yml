@@ -235,7 +235,7 @@ test_script:
   - cd ..
   - mkdir tmp_test
   - cd tmp_test
-  - python ..\check_license.py
+  - python ..\check_installed_package.py
   - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
