@@ -32,10 +32,10 @@ def check_dll_paths(mod):
     for filename in Path(install_basedir).rglob('*.dll'):
         list_filepaths.append(filename)
 
-    reference_basepath = os.path.dirname(list_filepaths.pop(0))
+    reference_basepath = os.path.dirname(str(list_filepaths.pop(0)))
 
     for filepath in list_filepaths:
-        if os.path.dirname(filepath) != reference_basepath:
+        if os.path.dirname(str(filepath)) != reference_basepath:
             print("mismatch between current DLL file path: ",
                    filepath,
                    "and the reference file path for packaged DLLs: ",
