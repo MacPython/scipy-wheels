@@ -1,10 +1,13 @@
 #!/usr/bin/env python
 """
-check_license.py [MODULE]
+check_installed_package.py [MODULE]
 
 Check the presence of a LICENSE.txt in the installed module directory,
 and that it appears to contain text prevalent for a Scipy binary
 distribution.
+
+On Windows, also check that all DLLs packaged in the SciPy
+wheel reside at the same path---see gh-57.
 
 """
 import os
@@ -12,11 +15,32 @@ import sys
 import io
 import re
 import argparse
+import platform
+from pathlib import Path
 
 def check_text(text):
     ok = (u'Copyright (c)' in text and
           re.search(u'This binary distribution of \w+ also bundles the following software', text))
     return ok
+
+def check_dll_paths(mod):
+    # all DLLs packaged in SciPy should have the
+    # same path; see issue gh-57
+    install_basedir = os.path.dirname(mod.__file__)
+    list_filepaths = []
+
+    for filename in Path(install_basedir).rglob('*.dll'):
+        list_filepaths.append(filename)
+
+    reference_basepath = os.path.dirname(str(list_filepaths.pop(0)))
+
+    for filepath in list_filepaths:
+        if os.path.dirname(str(filepath)) != reference_basepath:
+            print("mismatch between current DLL file path: ",
+                   filepath,
+                   "and the reference file path for packaged DLLs: ",
+                   reference_basepath)
+            sys.exit(1)
 
 
 def main():
@@ -43,6 +67,10 @@ def main():
               "text fragments\n".format(license_txt))
         print(text)
         sys.exit(1)
+
+
+    if platform.system() == 'Windows':
+        check_dll_paths(mod)
 
     sys.exit(0)
 
