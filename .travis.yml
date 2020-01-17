@@ -5,7 +5,7 @@ env:
         - BUILD_COMMIT=master
         - PLAT=x86_64
         - NP_BUILD_DEP="numpy==1.13.3"
-        - CYTHON_BUILD_DEP="Cython==0.29.13"
+        - CYTHON_BUILD_DEP="Cython==0.29.14"
         - PYBIND11_BUILD_DEP="pybind11==2.4.3"
         - NP_TEST_DEP="numpy==1.13.3"
         - UNICODE_WIDTH=32
@@ -32,17 +32,6 @@ matrix:
   include:
     - os: linux
       env:
-        - MB_PYTHON_VERSION=3.5
-        - NP_BUILD_DEP=numpy==1.13.3
-        - NP_TEST_DEP=numpy==1.13.3
-    - os: linux
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.13.3
-        - NP_TEST_DEP=numpy==1.13.3
-    - os: linux
-      env:
         - MB_PYTHON_VERSION=3.6
         - NP_BUILD_DEP=numpy==1.13.3
         - NP_TEST_DEP=numpy==1.13.3
@@ -78,12 +67,6 @@ matrix:
         - NP_BUILD_DEP=numpy==1.14.5
         - NP_TEST_DEP=numpy==1.14.5
         - CYTHON_BUILD_DEP="Cython"
-    - os: osx
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.5
-        - NP_BUILD_DEP=numpy==1.13.3
-        - NP_TEST_DEP=numpy==1.13.3
     - os: osx
       language: generic
       env:
