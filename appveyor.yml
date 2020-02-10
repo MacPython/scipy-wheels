@@ -256,7 +256,9 @@ on_success:
   # Upload the generated wheel package to Rackspace
   - cd ..\scipy
   - pip install wheelhouse-uploader
-  - python -m wheelhouse_uploader upload
-    --local-folder=dist
-    %UPLOAD_ARGS%
-    %CONTAINER%
+  # disable uploads because we have lost free hosting
+  # with Rackspace:
+  #- python -m wheelhouse_uploader upload
+  # --local-folder=dist
+  # %UPLOAD_ARGS%
+  # %CONTAINER%
