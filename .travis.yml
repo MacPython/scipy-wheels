@@ -118,9 +118,13 @@ after_success:
     # Upload may not work for Python 3.7:
     # https://github.com/ogrisel/wheelhouse-uploader/issues/27
     - pip install wheelhouse-uploader
-    # disable uploads because we have lost free hosting
-    # with Rackspace:
-    #- travis_wait python -m wheelhouse_uploader upload --local-folder
-    #     ${TRAVIS_BUILD_DIR}/wheelhouse/
-    #     $UPLOAD_ARGS
-    #     $CONTAINER
+    - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
+          # trigger an upload to the shared ecosystem
+          # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+          ANACONDA_ORG="scipy-wheels-nightly";
+          conda install -q -y anaconda-client;
+          # SCIPY_WHEELS_NIGHTLY is a secret token
+          # used in Travis CI config, originally 
+          # generated at anaconda.org for scipy-wheels-nightly
+          anaconda -t ${SCIPY_WHEELS_NIGHTLY} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
+      fi
