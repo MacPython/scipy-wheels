@@ -73,13 +73,31 @@ after_success:
     # Upload may not work for Python 3.7:
     # https://github.com/ogrisel/wheelhouse-uploader/issues/27
     - pip install wheelhouse-uploader
+    # conda will be used to handle uploads
+    - if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+          if [ "$PLAT" != "i686" ]; then
+              wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+          else
+              wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86.sh -O miniconda.sh;
+          fi
+      else
+          wget https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-x86_64.sh -O miniconda.sh;
+      fi
+    - bash miniconda.sh -b -p $HOME/miniconda
+    - source "$HOME/miniconda/etc/profile.d/conda.sh"
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update -q conda
+    - conda info -a
+    # trigger an upload to the shared ecosystem
+    # infrastructure at: https://anaconda.org/scipy-wheels-nightly
+    # for cron jobs only (restricted to master branch once
+    # per week)
+    # SCIPY_WHEELS_NIGHTLY is a secret token
+    # used in Travis CI config, originally
+    # generated at anaconda.org for scipy-wheels-nightly
     - if [ "$TRAVIS_EVENT_TYPE" != "cron" ]; then
-          # trigger an upload to the shared ecosystem
-          # infrastructure at: https://anaconda.org/scipy-wheels-nightly
           ANACONDA_ORG="scipy-wheels-nightly";
-          conda install -q -y anaconda-client;
-          # SCIPY_WHEELS_NIGHTLY is a secret token
-          # used in Travis CI config, originally 
-          # generated at anaconda.org for scipy-wheels-nightly
+          conda create -q -n test-environment python=${MB_PYTHON_VERSION} anaconda-client;
+          conda activate test-environment;
           anaconda -t ${SCIPY_WHEELS_NIGHTLY} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
       fi
