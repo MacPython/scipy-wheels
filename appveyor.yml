@@ -169,7 +169,7 @@ build_script:
   # DLLs with recent Python versions (>= 3.7)
   - ps: |
       $PYTHON_VERSION = $env:PYTHON_VERSION
-      If ($PYTHON_VERSION -ge 3.7) {
+      If ([System.Version]"$PYTHON_VERSION" -ge [System.Version]"3.7") {
           cd ..
           $cwd = Get-Location
           ls $cwd
