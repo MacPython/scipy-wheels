@@ -166,10 +166,10 @@ build_script:
   - cd scipy
   - git checkout %BUILD_COMMIT%
   # we use a distribution file to assist in loading
-  # DLLs with recent Python versions (>= 3.8)
+  # DLLs with recent Python versions (>= 3.7)
   - ps: |
       $PYTHON_VERSION = $env:PYTHON_VERSION
-      If ($PYTHON_VERSION -eq 3.8) {
+      If ($PYTHON_VERSION -ge 3.7) {
           cd ..
           $cwd = Get-Location
           ls $cwd
@@ -209,14 +209,7 @@ build_script:
 
 before_test:
   # Install test requirements.
-  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath
-  - ps: |
-      $PYTHON_VERSION = $env:PYTHON_VERSION
-      If ($PYTHON_VERSION -eq 3.8) {
-          python -m pip install matplotlib==3.2.0rc1
-      } Else {
-          python -m pip install matplotlib
-      }
+  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath matplotlib
 
   # Upgrade numpy to the version used for testing
   - python -m pip install "%NUMPY_TEST_DEP%"
