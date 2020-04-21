@@ -22,6 +22,7 @@ if os.name == 'nt':
     libs_path = os.path.abspath(os.path.join(os.path.dirname(__file__),
                                              '.libs'))
     print("**libs_path:", libs_path)
+    print("files in libs_path:", os.listdir(libs_path))
     if os.path.isdir(libs_path):
         for filename in glob.glob(os.path.join(libs_path, '*dll')):
             print("**filename:", filename)
