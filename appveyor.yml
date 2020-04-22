@@ -30,19 +30,6 @@ environment:
       DAILY_COMMIT: master
 
   matrix:
-    - PYTHON: C:\Python38
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
-
-    - PYTHON: C:\Python38-x64
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
 
     - PYTHON: C:\Python37
       PYTHON_VERSION: 3.7
@@ -57,16 +44,6 @@ environment:
       NUMPY_BUILD_DEP: numpy==1.17.3
       NUMPY_TEST_DEP: numpy==1.17.3
       CYTHON_BUILD_DEP: Cython
-
-    - PYTHON: C:\Python36
-      PYTHON_VERSION: 3.6
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.14.5
-
-    - PYTHON: C:\Python36-x64
-      PYTHON_VERSION: 3.6
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.14.5
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
