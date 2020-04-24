@@ -50,6 +50,8 @@ def main():
 
     # Drop '' from sys.path
     sys.path.pop(0)
+    print("sys.path:", sys.path)
+    print("args.module:", args.module)
 
     # Find module path
     __import__(args.module)
