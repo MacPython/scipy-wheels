@@ -1,0 +1,124 @@
+env:
+    global:
+        - REPO_DIR=scipy
+        # Also see DAILY_COMMIT below
+        - BUILD_COMMIT=master
+        - PLAT=x86_64
+        - NP_BUILD_DEP="numpy==1.14.5"
+        - CYTHON_BUILD_DEP="Cython==0.29.14"
+        - PYBIND11_BUILD_DEP="pybind11==2.4.3"
+        - NP_TEST_DEP="numpy==1.14.5"
+        - UNICODE_WIDTH=32
+        - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
+        - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
+        # Following generated with
+        # travis encrypt -r MacPython/scipy-wheels WHEELHOUSE_UPLOADER_SECRET=<the api key>
+        - secure:
+            "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
+        # Commit when running from master branch
+        - DAILY_COMMIT=master
+
+language: python
+dist: bionic
+services: docker
+os: linux
+
+jobs:
+  exclude:
+      # Exclude the default Python 3.5 build
+      - python: 3.5
+  include:
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+    - os: linux
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=i686
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.6
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+    - os: osx
+      language: generic
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - NP_BUILD_DEP=numpy==1.14.5
+        - NP_TEST_DEP=numpy==1.14.5
+        - CYTHON_BUILD_DEP="Cython"
+    - os: osx
+      language: generic
+      osx_image: xcode10.1
+      env:
+        - MB_PYTHON_VERSION=3.8
+        - NP_BUILD_DEP=numpy==1.17.3
+        - NP_TEST_DEP=numpy==1.17.3
+        - CYTHON_BUILD_DEP="Cython"
+        - MB_PYTHON_OSX_VER=10.9
+
+before_install:
+    - if [ "$TRAVIS_BRANCH" == "master" ]; then
+          CONTAINER="pre-release";
+          BUILD_COMMIT=${DAILY_COMMIT:-$BUILD_COMMIT};
+      else
+          CONTAINER=wheels;
+          UPLOAD_ARGS="--no-update-index";
+      fi
+    - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
+    - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
+    - source multibuild/common_utils.sh
+    - source multibuild/travis_steps.sh
+    - before_install
+
+install:
+    # Maybe get and clean and patch source
+    - clean_code $REPO_DIR $BUILD_COMMIT
+    - ./patch_code.sh $REPO_DIR
+    - build_wheel $REPO_DIR $PLAT
+
+script:
+    - install_run $PLAT
+
+after_success:
+    # Upload wheels to Rackspace container
+    # Upload may not work for Python 3.7:
+    # https://github.com/ogrisel/wheelhouse-uploader/issues/27
+    - pip install wheelhouse-uploader
+    # disable uploads because we have lost free hosting
+    # with Rackspace:
+    #- travis_wait python -m wheelhouse_uploader upload --local-folder
+    #     ${TRAVIS_BUILD_DIR}/wheelhouse/
+    #     $UPLOAD_ARGS
+    #     $CONTAINER
