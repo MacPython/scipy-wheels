@@ -124,3 +124,12 @@ after_success:
           pip install git+https://github.com/Anaconda-Server/anaconda-client
           anaconda -t ${SCIPY_WHEELS_NIGHTLY} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
       fi
+    # for merges (push events) we use the staging area instead;
+    # SCIPY_STAGING_UPLOAD_TOKEN is a secret token used in Travis
+    # CI config, originally generated at anaconda.org for
+    # multibuild-wheels-staging
+    - if [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
+          ANACONDA_ORG="multibuild-wheels-staging";
+          pip install git+https://github.com/Anaconda-Server/anaconda-client
+          anaconda -t ${SCIPY_STAGING_UPLOAD_TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
+      fi
