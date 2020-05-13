@@ -212,12 +212,11 @@ after_test:
   - C:\cygwin\bin\du -hs "%LOCALAPPDATA%\pip\Cache"
 
 on_success:
-  # Upload the generated wheel package to Rackspace
+  # Upload the generated wheel package to anaconda.org
+  # SCIPY_STAGING_UPLOAD_TOKEN is an encrypted variable
+  # used in Appveyor CI config, originally created at
+  # multibuild-wheels-staging site
   - cd ..\scipy
-  - pip install wheelhouse-uploader
-  # disable uploads because we have lost free hosting
-  # with Rackspace:
-  #- python -m wheelhouse_uploader upload
-  # --local-folder=dist
-  # %UPLOAD_ARGS%
-  # %CONTAINER%
+  - cmd: set ANACONDA_ORG="multibuild-wheels-staging"
+  - pip install git+https://github.com/Anaconda-Server/anaconda-client
+  - IF NOT "%SCIPY_STAGING_UPLOAD_TOKEN%" == "" anaconda -t %SCIPY_STAGING_UPLOAD_TOKEN% upload --force -u %ANACONDA_ORG% "%APPVEYOR_BUILD_FOLDER%/wheelhouse/*.whl"
