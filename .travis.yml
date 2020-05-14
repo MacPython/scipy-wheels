@@ -121,7 +121,7 @@ after_success:
     # generated at anaconda.org for scipy-wheels-nightly
     - if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
           ANACONDA_ORG="scipy-wheels-nightly";
-          pip install git+https://github.com/Anaconda-Server/anaconda-client
+          pip install git+https://github.com/Anaconda-Server/anaconda-client;
           anaconda -t ${SCIPY_WHEELS_NIGHTLY} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
       fi
     # for merges (push events) we use the staging area instead;
@@ -130,6 +130,6 @@ after_success:
     # multibuild-wheels-staging
     - if [ "$TRAVIS_EVENT_TYPE" == "push" ]; then
           ANACONDA_ORG="multibuild-wheels-staging";
-          pip install git+https://github.com/Anaconda-Server/anaconda-client
+          pip install git+https://github.com/Anaconda-Server/anaconda-client;
           anaconda -t ${SCIPY_STAGING_UPLOAD_TOKEN} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
       fi
