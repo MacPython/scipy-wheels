@@ -17,12 +17,11 @@ function build_wheel {
 }
 
 function build_libs {
-    local plat=${1:-$PLAT}
-    local tar_path=$(abspath $(get_gf_lib "openblas-${OPENBLAS_VERSION}" "$plat"))
-    # Sudo needed for macOS
-    local use_sudo=""
-    [ -n "$IS_OSX" ] && use_sudo="sudo"
-    (cd / && $use_sudo tar zxf $tar_path)
+    PYTHON_EXE=`which python`
+    $PYTHON_EXE -c"import platform; print('platform.uname().machine', platform.uname().machine)"
+    basedir=$($PYTHON_EXE scipy/tools/openblas_support.py)
+    $use_sudo cp -r $basedir/lib/* /usr/local/lib
+    $use_sudo cp $basedir/include/* /usr/local/include
 }
 
 function set_arch {
