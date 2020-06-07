@@ -28,13 +28,15 @@ via `Travis-CI cron jobs
 builds
 <https://www.appveyor.com/docs/build-configuration/#scheduled-builds>`.
 
-Builds from the ``master`` branch upload to a Rackspace container for
-pre-releases at
-https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
+At the time of writing, we currently only do weekly builds for Linux/MacOS
+(Travis CI), and not for Windows (Appveyor).
 
-Builds from the release branches upload to a Rackspace container for releases
-at
-https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+Weekly wheel builds are uploaded to:
+https://anaconda.org/scipy-wheels-nightly/scipy/files
+
+When a PR is merged into ``master`` branch or one of the release feature
+branches, the wheel artifacts are uploaded to a staging area:
+https://anaconda.org/multibuild-wheels-staging/scipy/files
 
 Pull requests should usually be submitted to the ``master`` branch.
 
@@ -49,19 +51,18 @@ The wheel-building repository:
   (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
   libraries into the wheel and relinks the extension modules against the
   copied libraries;
-* uploads the built wheels to a Rackspace container - see "Using the
-  repository" above.  The containers were kindly donated by Rackspace to
-  scikit-learn).
+* uploads the built wheels to a Anaconda Cloud container - see "Using the
+  repository" above.  The containers were kindly given expanded storage by
+  the Anaconda team.
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
 defined by the manylinux1 standard.
 
-The ``.travis.yml`` file in this repository has a line containing the API key
-for the Rackspace container encrypted with an RSA key that is unique to the
-repository - see https://docs.travis-ci.com/user/encryption-keys.  This
-encrypted key gives the travis build permission to upload to the Rackspace
-containers we use to house the uploads.
+Both Appveyor and Travis CI are using secret/encrypted keys to provide
+Anaconda Cloud upload credentials for merged PRs and weekly builds. The keys
+are provided by Anaconda Cloud, and can be pasted direclty into the settings
+for secret keys for Travis CI and Appveyor.
 
 Triggering a build
 ==================
@@ -104,62 +105,22 @@ of an unexpected build/test issue.
 Uploading the built wheels to pypi
 ==================================
 
-* pre-releases container visible at
-  https://7933911d6844c6c53a7d-47bd50c35cd79bd838daf386af554a83.ssl.cf2.rackcdn.com
-* release container visible at
-  https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
+* all pre-release wheel assets are stored in the Anaconda Cloud staging area:
+  https://anaconda.org/multibuild-wheels-staging/scipy/files
 
-Be careful, these links point to containers on a distributed content delivery
-network.  It can take up to 15 minutes for the new wheel file to get updated
-into the containers at the links above.
+Note that some other wheels are also stored here--those from any merged PRs
+to the wheels repo (``master`` or release feature branch).
 
 When the wheels are updated, you can download them to your machine manually,
-and then upload them manually to pypi, or by using twine_.  You can also use a
-script for doing this, housed at :
-https://github.com/MacPython/terryfy/blob/master/wheel-uploader
+or use a ``download-wheels.py`` tool in the main SciPy repo, like this:
 
-For the ``wheel-uploader`` script, you'll need twine and `beautiful soup 4
-<bs4>`_.
+``python tools/download-wheels.py 1.5.0rc1 -w $REPO_ROOT/release/installers/``
 
-You will typically have a directory on your machine where you store wheels,
-called a `wheelhouse`.   The typical call for `wheel-uploader` would then
-be something like::
-
-    VERSION=0.18.0
-    CDN_URL=https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com
-    wheel-uploader -u $CDN_URL -s -v -w ~/wheelhouse -t all scipy $VERSION
-
-where:
-
-* ``-u`` gives the URL from which to fetch the wheels, here the https address,
-  for some extra security;
-* ``-s`` causes twine to sign the wheels with your GPG key;
-* ``-v`` means give verbose messages;
-* ``-w ~/wheelhouse`` means download the wheels from to the local directory
-  ``~/wheelhouse``.
-
-``scipy`` is the root name of the wheel(s) to download / upload, and
-``0.18.0`` is the version to download / upload.
-
-In order to upload the wheels, you will need something like this
-in your ``~/.pypirc`` file::
-
-    [distutils]
-    index-servers =
-        pypi
-
-    [pypi]
-    username:your_user_name
-    password:your_password
-
-So, in this case, `wheel-uploader` will download all wheels starting with
-`scipy-0.18.0-` from the URL in ``$CDN_URL`` above to ``~/wheelhouse``, then
-upload them to PyPI.
+and then upload them manually to pypi, or by using twine_.
 
 Of course, you will need permissions to upload to PyPI, for this to work.
 
 .. _manylinux1: https://www.python.org/dev/peps/pep-0513
 .. _twine: https://pypi.python.org/pypi/twine
-.. _bs4: https://pypi.python.org/pypi/beautifulsoup4
 .. _delocate: https://pypi.python.org/pypi/delocate
 .. _auditwheel: https://pypi.python.org/pypi/auditwheel
