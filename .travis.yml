@@ -28,6 +28,24 @@ jobs:
       # Exclude the default Python 3.5 build
       - python: 3.5
   include:
+    - stage: Build and test wheel
+      os: linux
+      arch: arm64
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=aarch64
+        - NP_BUILD_DEP=numpy==1.19.1
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+      script:
+        - echo "This stage will just build AArch64 wheel"
+      workspaces:
+        create:
+          name: ws1
+          paths:
+            - wheelhouse
+      after_success:
+        - echo "This stage will not upload aarch64 wheel"
     - os: linux
       env:
         - MB_PYTHON_VERSION=3.6
@@ -87,6 +105,19 @@ jobs:
         - NP_TEST_DEP=numpy==1.17.3
         - CYTHON_BUILD_DEP="Cython"
         - MB_PYTHON_OSX_VER=10.9
+
+    - stage: Test wheel
+      arch: arm64
+      env:
+        - MB_PYTHON_VERSION=3.7
+        - PLAT=aarch64
+        - NP_TEST_DEP=numpy==1.19.1
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+      workspaces:
+        use: ws1
+      install:
+        - echo "This stage will test and upload the AArch64 wheel"
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
