@@ -123,16 +123,15 @@ install:
   # Install build requirements.
   - pip install "%CYTHON_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
 
-  # Replace numpy distutils with a version that can build with msvc + mingw-gfortran.
+  # Replace numpy distutils with a version that can build with msvc + mingw-gfortran,
+  # and writes __config__.py suitable for Python 3.8. (Requires Numpy >= 1.18.0)
   - ps: |
       $PYTHON_VERSION = $env:PYTHON_VERSION
-      If ([System.Version]"$PYTHON_VERSION" -lt [System.Version]"3.8") {
       $NumpyDir = $((python -c 'import os; import numpy; print(os.path.dirname(numpy.__file__))') | Out-String).Trim()
       rm -r -Force "$NumpyDir\distutils"
       mv numpy-distutils\numpy\distutils $NumpyDir
       rm -r -Force "$NumpyDir\compat"
       mv numpy-distutils\numpy\compat $NumpyDir
-      }
 
 build_script:
   # we use a distribution file to assist in loading
