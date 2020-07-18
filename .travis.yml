@@ -2,7 +2,7 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=7406158
+        - BUILD_COMMIT=100f579
         - PLAT=x86_64
         - NP_BUILD_DEP="numpy==1.14.5"
         - CYTHON_BUILD_DEP="Cython==0.29.18"
