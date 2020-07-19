@@ -7,6 +7,7 @@ env:
         - NP_BUILD_DEP="numpy==1.14.5"
         - CYTHON_BUILD_DEP="Cython==0.29.18"
         - PYBIND11_BUILD_DEP="pybind11==2.4.3"
+        - SETUPTOOLS_BUILD_DEP="setuptools!=49.2.0"
         - NP_TEST_DEP="numpy==1.14.5"
         - UNICODE_WIDTH=32
         - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
@@ -96,7 +97,7 @@ before_install:
           CONTAINER=wheels;
           UPLOAD_ARGS="--no-update-index";
       fi
-    - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
+    - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP $SETUPTOOLS_BUILD_DEP"
     - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
