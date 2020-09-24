@@ -30,7 +30,10 @@ jobs:
   include:
     - stage: Build and test wheel
       os: linux
-      arch: arm64
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=aarch64
@@ -107,7 +110,10 @@ jobs:
         - MB_PYTHON_OSX_VER=10.9
 
     - stage: Test wheel
-      arch: arm64
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=aarch64
