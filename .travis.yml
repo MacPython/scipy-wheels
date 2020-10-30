@@ -137,8 +137,8 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.19.1
-        - NP_TEST_DEP=numpy==1.19.1
+        - NP_BUILD_DEP=numpy==1.19.3
+        - NP_TEST_DEP=numpy==1.19.3
     - os: linux
       name: amd64-Linux-Py37
       env:
