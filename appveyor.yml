@@ -68,16 +68,6 @@ environment:
       NUMPY_TEST_DEP: numpy==1.14.5
       CYTHON_BUILD_DEP: Cython
 
-    - PYTHON: C:\Python36
-      PYTHON_VERSION: 3.6
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.14.5
-
-    - PYTHON: C:\Python36-x64
-      PYTHON_VERSION: 3.6
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.14.5
-
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
   - "ECHO \"%APPVEYOR_SCHEDULED_BUILD%\""
