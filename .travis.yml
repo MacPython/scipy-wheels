@@ -51,27 +51,6 @@ jobs:
       after_success:
         - echo "This stage will not upload aarch64 wheel"
     - os: linux
-      name: ARM64-Linux-Py36
-      arch: arm64-graviton2
-      dist: focal
-      virt: vm
-      group: edge
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - PLAT=aarch64
-        - NP_BUILD_DEP=numpy==1.19.1
-        - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
-      script:
-        - echo "This stage will just build AArch64 wheel"
-      workspaces:
-        create:
-          name: ws2
-          paths:
-            - wheelhouse
-      after_success:
-        - echo "This stage will not upload aarch64 wheel"
-    - os: linux
       name: ARM64-Linux-Py38
       arch: arm64-graviton2
       dist: focal
@@ -113,19 +92,6 @@ jobs:
             - wheelhouse
       after_success:
         - echo "This stage will not upload aarch64 wheel"
-    - os: linux
-      name: amd64-Linux-Py36
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.14.5
-        - NP_TEST_DEP=numpy==1.14.5
-    - os: linux
-      name: 32bit-amd64-Linux-Py36
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.14.5
-        - NP_TEST_DEP=numpy==1.14.5
     - os: linux
       name: amd64-Linux-Py39
       env:
@@ -170,13 +136,6 @@ jobs:
         - NP_TEST_DEP=numpy==1.14.5
         - CYTHON_BUILD_DEP="Cython"
     - os: osx
-      name: osx-Py36
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - NP_BUILD_DEP=numpy==1.14.5
-        - NP_TEST_DEP=numpy==1.14.5
-    - os: osx
       name: osx-Py37
       language: generic
       env:
@@ -219,21 +178,6 @@ jobs:
         - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
       workspaces:
         use: ws1
-      install:
-        - echo "This stage will test and upload the AArch64 wheel"
-    - arch: arm64-graviton2
-      name: ARM64-Linux-Py36
-      dist: focal
-      virt: vm
-      group: edge
-      env:
-        - MB_PYTHON_VERSION=3.6
-        - PLAT=aarch64
-        - NP_TEST_DEP=numpy==1.19.1
-        - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
-      workspaces:
-        use: ws2
       install:
         - echo "This stage will test and upload the AArch64 wheel"
     - arch: arm64-graviton2
