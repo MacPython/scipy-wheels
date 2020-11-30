@@ -38,7 +38,7 @@ jobs:
           if [ "$BUILD_REASON" == "Schedule" ]; then
             BUILD_COMMIT=$NIGHTLY_BUILD_COMMIT
           fi
-          echo "Building numpy@$BUILD_COMMIT"
+          echo "Building scipy@$BUILD_COMMIT"
           echo "##vso[task.setvariable variable=BUILD_COMMIT]$BUILD_COMMIT"
 
           # Platform variables used in multibuild scripts
@@ -57,8 +57,9 @@ jobs:
 
       - bash: |
           set -e
-          echo $BUILD_COMMIT
+          echo building for commit "$BUILD_COMMIT"
           pip install virtualenv wheel
+          BUILD_DEPENDS="setuptools wheel oldest-supported-numpy Cython>=0.29.18 pybind11>=2.4.3"
 
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
