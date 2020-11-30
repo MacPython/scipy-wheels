@@ -10,9 +10,6 @@ jobs:
     variables:
       REPO_DIR: "scipy"
       PLAT: "x86_64"
-      CYTHON_BUILD_DEP: "cython==0.29.18"
-      PYBIND11_BUILD_DEP: "pybind11==2.4.3"
-      NP_BUILD_DEP: "numpy==1.16.5"
       NIGHTLY_BUILD_COMMIT: "master"
       DAILY_COMMIT: "master"
     strategy:
@@ -62,8 +59,6 @@ jobs:
           set -e
           echo $BUILD_COMMIT
           pip install virtualenv wheel
-          BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
-          TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
 
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
@@ -77,6 +72,7 @@ jobs:
 
       - bash: |
           set -e
+          TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
           source extra_functions.sh
