@@ -69,21 +69,21 @@ function run_tests {
         local testmode="fast"
     fi
     # Check bundled license file
-    python ../check_installed_package.py
+    $PYTHON_EXE ../check_installed_package.py
     # Run tests
     if [[ -z "$IS_OSX" && `uname -m` != 'aarch64' ]]; then
-        python ../run_scipy_tests.py $testmode -- -n2 -rfEX
+        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n2 -rfEX
     else
-        python ../run_scipy_tests.py $testmode -- -n8 -rfEX
+        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n8 -rfEX
     fi
     # Show BLAS / LAPACK used
-    python -c 'import scipy; scipy.show_config()'
+    $PYTHON_EXE -c 'import scipy; scipy.show_config()'
 }
 
 function install_run {
     # Override multibuild test running command, to preinstall packages
     # that have to be installed before TEST_DEPENDS.
-    pip install $(pip_opts) setuptools_scm
+    $PYTHON_EXE -m pip install $(pip_opts) setuptools_scm
 
     # Copypaste from multibuild/common_utils.sh:install_run
     install_wheel
