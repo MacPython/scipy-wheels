@@ -83,6 +83,7 @@ function run_tests {
 function install_run {
     # Override multibuild test running command, to preinstall packages
     # that have to be installed before TEST_DEPENDS.
+    PIP_CMD="$PYTHON_EXE -m pip"
     $PYTHON_EXE -m pip install $(pip_opts) setuptools_scm
 
     # Copypaste from multibuild/common_utils.sh:install_run
