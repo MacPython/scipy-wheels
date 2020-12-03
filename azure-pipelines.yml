@@ -1,19 +1,50 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+schedules:
+- cron: "27 3 * * 0"
+  # 3:27am UTC every Sunday
+  displayName: Weekly build
+  branches:
+    include:
+    - master
+  always: true
 
-trigger:
-- main
+pr:
+- master
 
-pool:
-  vmImage: 'ubuntu-latest'
+variables:
+  BUILD_COMMIT: "master"
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+jobs:
+  - template: azure-posix.yml
+    parameters:
+      name: linux
+      vmImage: ubuntu-18.04
+      matrix:
+        amd64-linux-py39:
+          MB_PYTHON_VERSION: "3.9"
+        32bit-amd64-linux-py39:
+          MB_PYTHON_VERSION: "3.9"
+          PLAT: "i686"
+        amd64-linux-py38:
+          MB_PYTHON_VERSION: "3.8"
+        32bit-amd64-linux-py38:
+          MB_PYTHON_VERSION: "3.8"
+          PLAT: "i686"
+        amd64-linux-py37:
+          MB_PYTHON_VERSION: "3.7"
+        32bit-amd64-linux-py37:
+          MB_PYTHON_VERSION: "3.7"
+          PLAT: "i686"
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  - template: azure-posix.yml
+    parameters:
+      name: macOS
+      vmImage: macOS-10.14
+      matrix:
+        osx-Py37:
+          MB_PYTHON_VERSION: "3.7"
+        osx-Py38:
+          MB_PYTHON_VERSION: "3.8"
+          MB_PYTHON_OSX_VER: "10.9"
+        osx-Py39:
+          MB_PYTHON_VERSION: "3.9"
+          MB_PYTHON_OSX_VER: "10.9"

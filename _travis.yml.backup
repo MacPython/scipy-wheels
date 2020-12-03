@@ -4,10 +4,8 @@ env:
         # Also see DAILY_COMMIT below
         - BUILD_COMMIT=master
         - PLAT=x86_64
-        - NP_BUILD_DEP="numpy==1.16.5"
         - CYTHON_BUILD_DEP="Cython==0.29.18"
         - PYBIND11_BUILD_DEP="pybind11==2.4.3"
-        - NP_TEST_DEP="numpy==1.16.5"
         - UNICODE_WIDTH=32
         - MANYLINUX_URL="https://5cf40426d9f06eb7461d-6fe47d9331aba7cd62fc36c7196769e4.ssl.cf2.rackcdn.com"
         - WHEELHOUSE_UPLOADER_USERNAME=travis-worker
@@ -38,7 +36,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=aarch64
-        - NP_BUILD_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
       script:
@@ -59,7 +56,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=aarch64
-        - NP_BUILD_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
       script:
@@ -80,7 +76,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=aarch64
-        - NP_BUILD_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
       script:
@@ -92,77 +87,6 @@ jobs:
             - wheelhouse
       after_success:
         - echo "This stage will not upload aarch64 wheel"
-    - os: linux
-      name: amd64-Linux-Py39
-      env:
-        - MB_PYTHON_VERSION=3.9
-        - NP_BUILD_DEP=numpy==1.19.1
-        - NP_TEST_DEP=numpy==1.19.1
-    - os: linux
-      name: 32bit-amd64-Linux-Py39
-      env:
-        - MB_PYTHON_VERSION=3.9
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.19.3
-        - NP_TEST_DEP=numpy==1.19.3
-    - os: linux
-      name: amd64-Linux-Py37
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.16.5
-        - NP_TEST_DEP=numpy==1.16.5
-        - CYTHON_BUILD_DEP="Cython"
-    - os: linux
-      name: amd64-Linux-Py38
-      env:
-        - MB_PYTHON_VERSION=3.8
-        - NP_BUILD_DEP=numpy==1.17.3
-        - NP_TEST_DEP=numpy==1.17.3
-        - CYTHON_BUILD_DEP="Cython"
-    - os: linux
-      name: 32bit-amd64-Linux-Py38
-      env:
-        - MB_PYTHON_VERSION=3.8
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.17.3
-        - NP_TEST_DEP=numpy==1.17.3
-        - CYTHON_BUILD_DEP="Cython"
-    - os: linux
-      name: 32bit-amd64-Linux-Py37
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PLAT=i686
-        - NP_BUILD_DEP=numpy==1.16.5
-        - NP_TEST_DEP=numpy==1.16.5
-        - CYTHON_BUILD_DEP="Cython"
-    - os: osx
-      name: osx-Py37
-      language: generic
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - NP_BUILD_DEP=numpy==1.16.5
-        - NP_TEST_DEP=numpy==1.16.5
-        - CYTHON_BUILD_DEP="Cython"
-    - os: osx
-      name: osx-Py38
-      language: generic
-      osx_image: xcode10.1
-      env:
-        - MB_PYTHON_VERSION=3.8
-        - NP_BUILD_DEP=numpy==1.17.3
-        - NP_TEST_DEP=numpy==1.17.3
-        - CYTHON_BUILD_DEP="Cython"
-        - MB_PYTHON_OSX_VER=10.9
-    - os: osx
-      name: osx-Py39
-      language: generic
-      osx_image: xcode10.1
-      env:
-        - MB_PYTHON_VERSION=3.9
-        - NP_BUILD_DEP=numpy==1.19.1
-        - NP_TEST_DEP=numpy==1.19.1
-        - CYTHON_BUILD_DEP="Cython"
-        - MB_PYTHON_OSX_VER=10.9
 
     - stage: Test wheel
       name: ARM64-Linux-Py37
@@ -173,7 +97,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.7
         - PLAT=aarch64
-        - NP_TEST_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
       workspaces:
@@ -188,7 +111,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.9
         - PLAT=aarch64
-        - NP_TEST_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
       workspaces:
@@ -203,7 +125,6 @@ jobs:
       env:
         - MB_PYTHON_VERSION=3.8
         - PLAT=aarch64
-        - NP_TEST_DEP=numpy==1.19.1
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
       workspaces:
@@ -219,8 +140,8 @@ before_install:
           CONTAINER=wheels;
           UPLOAD_ARGS="--no-update-index";
       fi
-    - BUILD_DEPENDS="$NP_BUILD_DEP $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
-    - TEST_DEPENDS="$NP_TEST_DEP pytest pytest-xdist pytest-faulthandler pytest-env"
+    - BUILD_DEPENDS="wheel oldest-supported-numpy $CYTHON_BUILD_DEP $PYBIND11_BUILD_DEP"
+    - TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
     - before_install
