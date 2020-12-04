@@ -92,12 +92,14 @@ jobs:
           set -e
           if [ "$BUILD_COMMIT" == "master" ]; then
             ANACONDA_ORG="scipy-wheels-nightly"
-            TOKEN="$MAPPED_SCIPY_NIGHTLY_UPLOAD_TOKEN"
+            TOKEN="$MAPPED_SCIPY_WHEELS_NIGHTLY"
+            echo getting SCIPY_WHEELS_NIGHTLY
           else
             ANACONDA_ORG="multibuild-wheels-staging"
             TOKEN="$MAPPED_SCIPY_STAGING_UPLOAD_TOKEN"
+            echo getting SCIPY_STAGING_UPLOAD_TOKEN
           fi
-          if [ "$TOKEN" == "" -o "${TOKEN:0:7}" == "\$(NUMPY" ]; then
+          if [ "$TOKEN" == "" -o "${TOKEN:0:7}" == "\$(SCIPY" ]; then
             echo "##[warning] Could not find anaconda.org upload token in secret variables"
             TOKEN=""
           fi
@@ -106,7 +108,7 @@ jobs:
         displayName: Retrieve secret upload token
         env:
           # Secret variables need to mapped to env variables explicitly:
-          MAPPED_SCIPY_NIGHTLY_UPLOAD_TOKEN: $(SCIPY_NIGHTLY_UPLOAD_TOKEN)
+          MAPPED_SCIPY_WHEELS_NIGHTLY: $(SCIPY_WHEELS_NIGHTLY)
           MAPPED_SCIPY_STAGING_UPLOAD_TOKEN: $(SCIPY_STAGING_UPLOAD_TOKEN)
 
       - bash: |
@@ -118,7 +120,7 @@ jobs:
 
           echo uploading wheelhouse/*.whl
 
-          anaconda -t $TOKEN upload -u $ANACONDA_ORG wheelhouse/*.whl
+          anaconda -v -t $TOKEN upload -u $ANACONDA_ORG wheelhouse/*.whl
           echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
         displayName: Upload to anaconda.org (only if secret token is retrieved)
         condition: ne(variables['TOKEN'], '')
