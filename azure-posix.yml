@@ -49,6 +49,10 @@ jobs:
             echo "##vso[task.setvariable variable=TRAVIS_OS_NAME]linux"
           fi
 
+          # use GCC with full C++14 standard
+          CC=gcc-5
+          CXX=g++-5
+
           # Store original Python path to be able to create test_venv pointing
           # to same Python version.
           PYTHON_EXE=`which python`
