@@ -70,6 +70,9 @@ jobs:
 
           before_install
 
+          git remote add mckib2 https://github.com/mckib2/scipy
+          git fetch mckib2 boost
+
           clean_code $REPO_DIR $BUILD_COMMIT
           ./patch_code.sh $REPO_DIR
           build_wheel $REPO_DIR $PLAT
