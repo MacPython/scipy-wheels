@@ -66,8 +66,6 @@ jobs:
 
           before_install
 
-          echo $MB_ML_VER
-          pwd
           (cd $REPO_DIR \
               && pwd \
               && git remote add mckib2 https://github.com/mckib2/scipy \
