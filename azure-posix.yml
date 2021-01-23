@@ -66,6 +66,7 @@ jobs:
 
           before_install
 
+          echo "try again"
           (cd $REPO_DIR \
               && pwd \
               && git remote add mckib2 https://github.com/mckib2/scipy \
