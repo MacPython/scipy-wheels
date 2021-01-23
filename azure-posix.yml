@@ -66,17 +66,13 @@ jobs:
 
           before_install
 
+          echo $MB_ML_VER
           pwd
           (cd $REPO_DIR \
               && pwd \
               && git remote add mckib2 https://github.com/mckib2/scipy \
               && git fetch mckib2 boost \
               && git checkout -b boost mckib2/boost)
-
-          # use GCC with full C++14 standard
-          gcc --version
-          apt update -y && apt install -y g++-5 gcc-5
-          gcc --version
 
           clean_code $REPO_DIR $BUILD_COMMIT
           ./patch_code.sh $REPO_DIR
