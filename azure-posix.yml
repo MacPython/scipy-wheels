@@ -74,8 +74,9 @@ jobs:
               && git checkout -b boost mckib2/boost)
 
           # use GCC with full C++14 standard
-          yum --enablerepo=centos-sclo-rh-testing -y install devtoolset-6-gcc
-          source /opt/rh/devtoolset-6/enable
+          gcc --version
+          apt update -y && apt install -y g++-5 gcc-5
+          gcc --version
 
           clean_code $REPO_DIR $BUILD_COMMIT
           ./patch_code.sh $REPO_DIR
