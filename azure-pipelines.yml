@@ -11,7 +11,7 @@ pr:
 - master
 
 variables:
-  BUILD_COMMIT: "mckib2/boost"
+  BUILD_COMMIT: "boost"
 
 jobs:
   - template: azure-posix.yml
