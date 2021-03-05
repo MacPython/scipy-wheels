@@ -11,7 +11,8 @@ pr:
 - master
 
 variables:
-  BUILD_COMMIT: "master"
+  BUILD_COMMIT: "boost"
+  MB_ML_VER: 2010
 
 jobs:
   - template: azure-posix.yml
