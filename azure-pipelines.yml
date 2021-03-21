@@ -11,7 +11,7 @@ pr:
 - master
 
 variables:
-  BUILD_COMMIT: "5ab742624"
+  BUILD_COMMIT: "f2ef65dc7f"
 
 jobs:
   - template: azure-posix.yml
