@@ -13,6 +13,7 @@ environment:
       MINGW_32: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
       MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
       CYTHON_BUILD_DEP: Cython==0.29.18
+      PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.16.5
       PYBIND11_BUILD_DEP: pybind11==2.4.3
       TEST_MODE: fast
@@ -125,7 +126,7 @@ install:
   - python -m pip install -U pip setuptools wheel
 
   # Install build requirements.
-  - pip install "%CYTHON_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
+  - pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran,
   # and writes __config__.py suitable for Python 3.8. (Requires Numpy >= 1.18.0)
@@ -221,5 +222,5 @@ on_success:
   # multibuild-wheels-staging site
   - cd ..\scipy
   - cmd: set ANACONDA_ORG="multibuild-wheels-staging"
-  - pip install git+https://github.com/Anaconda-Server/anaconda-client
+  - pip install git+https://github.com/Anaconda-Platform/anaconda-client.git@ce89e4351eef
   - IF NOT "%SCIPY_STAGING_UPLOAD_TOKEN%" == "" anaconda -t %SCIPY_STAGING_UPLOAD_TOKEN% upload --force -u %ANACONDA_ORG% "dist\*.whl"
