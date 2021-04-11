@@ -3,13 +3,18 @@ Building and uploading scipy wheels
 ###################################
 
 We automate wheel building using this custom github repository that builds on
-the travis-ci OSX machines and the travis-ci Linux machines.
+Azure DevOps for Linux and macOS, on AppVeyor for Windows, and on TravisCI
+for ``aarch64`` (64-bit ARM).
 
 The travis-ci interface for the builds is
 https://travis-ci.com/github/MacPython/scipy-wheels
 
 Appveyor interface at
 https://ci.appveyor.com/project/scipy/scipy-wheels
+
+Azure interface at (not a typo, it got migrated to the NumPy org - we may
+want to migrage it to the SciPy Azure DevOps org in the future):
+https://dev.azure.com/numpy/numpy/_build?definitionId=9
 
 The driving github repository is
 https://github.com/MacPython/scipy-wheels
@@ -23,6 +28,7 @@ The repository contains the branches:
 * ``vx.y.z`` - for building releases.
 
 Travis-CI and Appveyor builds the ``master`` regularly (daily/weekly),
+merges to master. and Appveyor builds the ``master`` regularly (daily/weekly),
 via `Travis-CI cron jobs
 <https://docs.travis-ci.com/user/cron-jobs/>`_ and `Appveyor scheduled
 builds
