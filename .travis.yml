@@ -1,3 +1,8 @@
+# Get a less shallow clone; needed to get the commit count since
+# the previous release branch point right.
+git:
+  depth: 3000
+
 env:
     global:
         - REPO_DIR=scipy
