@@ -170,8 +170,6 @@ after_success:
     # used in Travis CI config, originally
     # generated at anaconda.org for scipy-wheels-nightly
     - if [ "$TRAVIS_EVENT_TYPE" == "cron" ]; then
-          source extra_functions.sh;
-          for f in wheelhouse/*.whl; do rename_wheel $f; done;
           ANACONDA_ORG="scipy-wheels-nightly";
           pip install git+https://github.com/Anaconda-Platform/anaconda-client.git@ce89e4351eef;
           anaconda -t ${SCIPY_WHEELS_NIGHTLY} upload --force -u ${ANACONDA_ORG} ${TRAVIS_BUILD_DIR}/wheelhouse/*.whl;
