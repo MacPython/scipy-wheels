@@ -164,6 +164,13 @@ build_script:
       $PYTHON_ARCH = $env:PYTHON_ARCH
       If ($PYTHON_ARCH -eq 32) {
           $MINGW = $env:MINGW_32
+          # 32-bit build requires careful adjustments
+          # until Microsoft has a switch we can use
+          # directly for i686 mingw
+          $env:NPY_DISTUTILS_APPEND_FLAGS = 1
+          $env:CFLAGS = "-m32"
+          $env:LDFLAGS = "-m32"
+          refreshenv
       } Else {
           $MINGW = $env:MINGW_64
       }
