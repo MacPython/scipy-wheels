@@ -76,7 +76,6 @@ jobs:
           TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
-          source extra_functions.sh
           install_run $PLAT
         displayName: Install wheel and test
 
@@ -113,13 +112,7 @@ jobs:
 
       - bash: |
           set -e
-          if [ $ANACONDA_ORG == "scipy-wheels-nightly" ]; then
-            source extra_functions.sh
-            for f in wheelhouse/*.whl; do rename_wheel $f; done
-          fi
-
           echo uploading wheelhouse/*.whl
-
           anaconda -v -t $TOKEN upload --force -u $ANACONDA_ORG wheelhouse/*.whl
           echo "PyPI-style index: https://pypi.anaconda.org/$ANACONDA_ORG/simple"
         displayName: Upload to anaconda.org (only if secret token is retrieved)
