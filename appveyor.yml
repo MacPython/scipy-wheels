@@ -176,6 +176,7 @@ build_script:
       }
       $env:Path += ";$MINGW"
       $env:NPY_NUM_BUILD_JOBS = "4"
+  - git submodule update --init
   - python setup.py bdist_wheel
   - ps: |
       # Upload artifact to Appveyor immediately after build
