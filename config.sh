@@ -12,7 +12,7 @@ function build_wheel {
         build_bdist_wheel $@
     else
         export FFLAGS="$FFLAGS -fPIC"
-        build_osx_wheel $@
+        wrap_wheel_builder build_osx_wheel $@
     fi
 }
 
