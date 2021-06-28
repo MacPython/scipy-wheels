@@ -32,6 +32,11 @@ function pyinst_fname_for_version {
     echo "python-${py_version}-macosx${py_osx_ver}.${inst_ext}"
 }
 
+function install_delocate {
+    check_pip
+    $PIP_CMD install git+https://github.com/isuruf/delocate.git@arm64
+}
+
 function build_libs {
     PYTHON_EXE=`which python`
     $PYTHON_EXE -c"import platform; print('platform.uname().machine', platform.uname().machine)"
