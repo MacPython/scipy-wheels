@@ -16,12 +16,29 @@ function build_wheel {
     fi
 }
 
+# TODO: Remove once https://github.com/matthew-brett/multibuild/pull/409 lands
+function pyinst_fname_for_version {
+    # echo filename for OSX installer file given Python and minimum
+    # macOS versions
+    # Parameters
+    #   $py_version (Python version in major.minor.extra format)
+    #   $py_osx_ver: {major.minor | not defined}
+    #       if defined, the minimum macOS SDK version that Python is
+    #       built for, eg: "10.6" or "10.9", if not defined, infers
+    #       this from $py_version using macpython_sdk_for_version
+    local py_version=$1
+    local py_osx_ver=${2:-$(macpython_sdk_for_version $py_version)}
+    local inst_ext=$(pyinst_ext_for_version $py_version)
+    echo "python-${py_version}-macosx${py_osx_ver}.${inst_ext}"
+}
+
 function build_libs {
     PYTHON_EXE=`which python`
     $PYTHON_EXE -c"import platform; print('platform.uname().machine', platform.uname().machine)"
     basedir=$($PYTHON_EXE scipy/tools/openblas_support.py)
-    $use_sudo cp -r $basedir/lib/* /usr/local/lib
-    $use_sudo cp $basedir/include/* /usr/local/include
+    $use_sudo cp -r $basedir/lib/* $BUILD_PREFIX/lib
+    $use_sudo cp $basedir/include/* $BUILD_PREFIX/include
+    export OPENBLAS=$BUILD_PREFIX
 }
 
 function set_arch {
