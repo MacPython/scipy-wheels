@@ -19,6 +19,10 @@ jobs:
       name: linux
       vmImage: ubuntu-18.04
       matrix:
+        amd64-linux-py310:
+          AZURE_PYTHON_VERSION: "3.9"
+          MB_PYTHON_VERSION: "3.10"
+          DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
         amd64-linux-py39:
           MB_PYTHON_VERSION: "3.9"
         32bit-amd64-linux-py39:
