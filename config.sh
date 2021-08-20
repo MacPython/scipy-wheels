@@ -12,6 +12,7 @@ function build_wheel {
         build_bdist_wheel $@
     else
         export FFLAGS="$FFLAGS -fPIC"
+        install_gfortran
         wrap_wheel_builder build_osx_wheel $@
     fi
 }
@@ -25,16 +26,6 @@ function build_libs {
     export OPENBLAS=$BUILD_PREFIX
 }
 
-function set_arch {
-    local arch=$1
-    export CC="clang $arch"
-    export CXX="clang++ $arch"
-    export CFLAGS="$arch"
-    export FFLAGS="$arch"
-    export FARCH="$arch"
-    export LDFLAGS="$arch"
-}
-
 function build_wheel_with_patch {
     # Patch numpy distutils to fix OpenBLAS build
     (cd .. && ./patch_numpy.sh)
@@ -42,19 +33,7 @@ function build_wheel_with_patch {
 }
 
 function build_osx_wheel {
-    # Build 64-bit wheel
-    # Standard gfortran won't build dual arch objects.
     local repo_dir=${1:-$REPO_DIR}
-    local py_ld_flags="-Wall -undefined dynamic_lookup -bundle"
-
-    install_gfortran
-    # 64-bit wheel
-    local arch="-m64"
-    set_arch $arch
-    build_libs x86_64
-    # Build wheel
-    export LDSHARED="$CC $py_ld_flags"
-    export LDFLAGS="$arch $py_ld_flags"
     # Work round build dependencies spec in pyproject.toml
     # See e.g.
     # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
