@@ -38,6 +38,7 @@ function build_osx_wheel {
        export F77=$FC
        export F90=$FC
     fi
+    build_libs
     # Work round build dependencies spec in pyproject.toml
     # See e.g.
     # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
