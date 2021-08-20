@@ -34,6 +34,10 @@ function build_wheel_with_patch {
 
 function build_osx_wheel {
     local repo_dir=${1:-$REPO_DIR}
+    if [ ! -z "$FC" ]; then
+       export F77=$FC
+       export F90=$FC
+    fi
     # Work round build dependencies spec in pyproject.toml
     # See e.g.
     # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
