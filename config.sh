@@ -8,6 +8,8 @@ function build_wheel {
         unset FFLAGS
         export LDFLAGS="-shared -Wl,-strip-all"
         build_libs $PLAT
+        # Remove once https://github.com/scipy/scipy/pull/14631 lands
+        export CFLAGS="$CFLAGS -D_ISOC99_SOURCE=1"
         # Work round build dependencies spec in pyproject.toml
         build_bdist_wheel $@
     else
