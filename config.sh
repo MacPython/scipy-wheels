@@ -5,15 +5,10 @@ source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
     if [ -z "$IS_OSX" ]; then
-        unset FFLAGS
-        export LDFLAGS="-shared -Wl,-strip-all"
         build_libs $PLAT
-        # Remove once https://github.com/scipy/scipy/pull/14631 lands
-        export CFLAGS="$CFLAGS -D_ISOC99_SOURCE=1"
         # Work round build dependencies spec in pyproject.toml
         build_bdist_wheel $@
     else
-        export FFLAGS="$FFLAGS -fPIC"
         install_gfortran
         wrap_wheel_builder build_osx_wheel $@
     fi
