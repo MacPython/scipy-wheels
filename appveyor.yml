@@ -10,8 +10,8 @@ cache:
 
 environment:
   global:
-      MINGW_32: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
-      MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
+      MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
+      MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
       CYTHON_BUILD_DEP: Cython==0.29.18
       PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.16.5
@@ -88,6 +88,9 @@ install:
 
   - echo "Installed SDKs:"
   - dir "C:/Program Files/Microsoft SDKs/Windows"
+
+  # install a newer mingw for i686 as the appveyor images don't have gcc 7+ for i686
+  - if [%PYTHON_ARCH%]==[32] choco install -y mingw --forcex86 --force --version=7.3.0
 
   - git submodule update --init
 
