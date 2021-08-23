@@ -4,13 +4,13 @@
 source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
+    export FFLAGS="$FFLAGS -fPIC"
     if [ -z "$IS_OSX" ]; then
         build_libs $PLAT
         # Work round build dependencies spec in pyproject.toml
         build_bdist_wheel $@
     else
         install_gfortran
-        export FFLAGS="$FFLAGS -fPIC"
         wrap_wheel_builder build_osx_wheel $@
     fi
 }
