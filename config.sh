@@ -10,6 +10,7 @@ function build_wheel {
         build_bdist_wheel $@
     else
         install_gfortran
+        export FFLAGS="$FFLAGS -fPIC"
         wrap_wheel_builder build_osx_wheel $@
     fi
 }
