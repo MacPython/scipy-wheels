@@ -29,19 +29,12 @@ jobs:
         32bit-amd64-linux-py38:
           MB_PYTHON_VERSION: "3.8"
           PLAT: "i686"
-        amd64-linux-py37:
-          MB_PYTHON_VERSION: "3.7"
-        32bit-amd64-linux-py37:
-          MB_PYTHON_VERSION: "3.7"
-          PLAT: "i686"
 
   - template: azure-posix.yml
     parameters:
       name: macOS
       vmImage: macOS-10.15
       matrix:
-        osx-Py37:
-          MB_PYTHON_VERSION: "3.7"
         osx-Py38:
           MB_PYTHON_VERSION: "3.8"
           MB_PYTHON_OSX_VER: "10.9"

@@ -33,28 +33,7 @@ jobs:
       - python: 3.5
   include:
     - stage: Build and test wheel
-      name: ARM64-Linux-Py37
       os: linux
-      arch: arm64-graviton2
-      dist: focal
-      virt: vm
-      group: edge
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PLAT=aarch64
-        - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
-        - MB_ML_VER=2014
-      script:
-        - echo "This stage will just build AArch64 wheel"
-      workspaces:
-        create:
-          name: ws1
-          paths:
-            - wheelhouse
-      after_success:
-        - echo "This stage will not upload aarch64 wheel"
-    - os: linux
       name: ARM64-Linux-Py38
       arch: arm64-graviton2
       dist: focal
@@ -98,22 +77,7 @@ jobs:
         - echo "This stage will not upload aarch64 wheel"
 
     - stage: Test wheel
-      name: ARM64-Linux-Py37
       arch: arm64-graviton2
-      dist: focal
-      virt: vm
-      group: edge
-      env:
-        - MB_PYTHON_VERSION=3.7
-        - PLAT=aarch64
-        - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
-        - MB_ML_VER=2014
-      workspaces:
-        use: ws1
-      install:
-        - echo "This stage will test and upload the AArch64 wheel"
-    - arch: arm64-graviton2
       name: ARM64-Linux-Py39
       dist: focal
       virt: vm
