@@ -82,7 +82,7 @@ jobs:
       virt: vm
       group: edge
       env:
-        - MB_PYTHON_VERSION=3.10.0
+        - MB_PYTHON_VERSION=3.10
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
@@ -104,7 +104,7 @@ jobs:
       virt: vm
       group: edge
       env:
-        - MB_PYTHON_VERSION=3.10.0
+        - MB_PYTHON_VERSION=3.10
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
         - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
