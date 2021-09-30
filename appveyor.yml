@@ -27,6 +27,20 @@ environment:
       DAILY_COMMIT: master
 
   matrix:
+    - PYTHON: C:\Python310
+      PYTHON_VERSION: 3.10
+      PYTHON_ARCH: 32
+      NUMPY_BUILD_DEP: numpy==1.19.3
+      NUMPY_TEST_DEP: numpy==1.19.3
+      CYTHON_BUILD_DEP: Cython
+
+    - PYTHON: C:\Python310-x64
+      PYTHON_VERSION: 3.10
+      PYTHON_ARCH: 64
+      NUMPY_BUILD_DEP: numpy==1.19.3
+      NUMPY_TEST_DEP: numpy==1.19.3
+      CYTHON_BUILD_DEP: Cython
+
     - PYTHON: C:\Python39
       PYTHON_VERSION: 3.9
       PYTHON_ARCH: 32

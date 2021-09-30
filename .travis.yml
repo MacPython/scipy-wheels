@@ -75,9 +75,46 @@ jobs:
             - wheelhouse
       after_success:
         - echo "This stage will not upload aarch64 wheel"
+    - os: linux
+      name: ARM64-Linux-Py310
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
+      env:
+        - MB_PYTHON_VERSION=3.10
+        - PLAT=aarch64
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+        - MB_ML_VER=2014
+      script:
+        - echo "This stage will just build AArch64 wheel"
+      workspaces:
+        create:
+          name: ws4
+          paths:
+            - wheelhouse
+      after_success:
+        - echo "This stage will not upload aarch64 wheel"
 
     - stage: Test wheel
       arch: arm64-graviton2
+      name: ARM64-Linux-Py310
+      dist: focal
+      virt: vm
+      group: edge
+      env:
+        - MB_PYTHON_VERSION=3.10
+        - PLAT=aarch64
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+        - MB_ML_VER=2014
+      workspaces:
+        use: ws4
+      install:
+        - echo "This stage will test and upload the AArch64 wheel"
+
+    - arch: arm64-graviton2
       name: ARM64-Linux-Py39
       dist: focal
       virt: vm
