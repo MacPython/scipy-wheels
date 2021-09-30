@@ -22,6 +22,7 @@ jobs:
         amd64-linux-py3.10:
           AZURE_PYTHON_VERSION: "3.9"
           MB_PYTHON_VERSION: "3.10"
+          MB_ML_VER: "2014"
           DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
         amd64-linux-py39:
           MB_PYTHON_VERSION: "3.9"
