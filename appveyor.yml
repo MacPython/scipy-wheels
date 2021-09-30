@@ -12,7 +12,7 @@ environment:
   global:
       MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
       MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
-      CYTHON_BUILD_DEP: Cython==0.29.18
+      CYTHON_BUILD_DEP: Cython==0.29.24
       PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.16.5
       PYBIND11_BUILD_DEP: pybind11==2.4.3

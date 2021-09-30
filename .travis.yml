@@ -9,7 +9,7 @@ env:
         # Also see DAILY_COMMIT below
         - BUILD_COMMIT=master
         - PLAT=x86_64
-        - CYTHON_BUILD_DEP="Cython==0.29.18"
+        - CYTHON_BUILD_DEP="Cython==0.29.24"
         - PYTHRAN_BUILD_DEP="pythran"
         - PYBIND11_BUILD_DEP="pybind11==2.4.3"
         - UNICODE_WIDTH=32
