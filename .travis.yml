@@ -123,7 +123,7 @@ jobs:
         - MB_PYTHON_VERSION=3.9
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
         - MB_ML_VER=2014
       workspaces:
         use: ws4
@@ -138,7 +138,7 @@ jobs:
         - MB_PYTHON_VERSION=3.8
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/xenial_arm64v8
+        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
         - MB_ML_VER=2014
       workspaces:
         use: ws3
