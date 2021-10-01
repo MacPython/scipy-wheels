@@ -91,12 +91,11 @@ jobs:
         - echo "This stage will just build AArch64 wheel"
       workspaces:
         create:
-          name: ws4
+          name: ws5
           paths:
             - wheelhouse
       after_success:
         - echo "This stage will not upload aarch64 wheel"
-
     - stage: Test wheel
       arch: arm64-graviton2
       name: ARM64-Linux-Py310
@@ -110,10 +109,9 @@ jobs:
         - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
         - MB_ML_VER=2014
       workspaces:
-        use: ws4
+        use: ws5
       install:
         - echo "This stage will test and upload the AArch64 wheel"
-
     - arch: arm64-graviton2
       name: ARM64-Linux-Py39
       dist: focal
