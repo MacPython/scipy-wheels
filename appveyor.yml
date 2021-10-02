@@ -5,7 +5,7 @@ clone_depth: 50
 # No reason for us to restrict the number concurrent jobs
 max_jobs: 100
 
-#image: Visual Studio 2017
+image: Visual Studio 2017
 
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
@@ -14,8 +14,7 @@ environment:
   global:
       MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
       MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
-      CYTHON_BUILD_DEP: Cython==0.29.18
-#      CYTHON_BUILD_DEP: Cython==0.29.24
+      CYTHON_BUILD_DEP: Cython==0.29.24
       PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.16.5
       PYBIND11_BUILD_DEP: pybind11==2.4.3
@@ -163,8 +162,8 @@ build_script:
   # The version should match the compiler version, see https://wiki.python.org/moin/WindowsCompilers
   - mkdir "build\lib.win32-%PYTHON_VERSION%\scipy\.libs"
   - mkdir "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140CRT\msvcp14.0dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140CRT\msvcp14.0dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
   # Build wheel using setup.py
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
