@@ -5,6 +5,8 @@ clone_depth: 50
 # No reason for us to restrict the number concurrent jobs
 max_jobs: 100
 
+image: Visual Studio 2017
+
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
@@ -72,8 +74,8 @@ install:
   - cmd: echo "Filesystem root:"
   - dir C:\
 
-  - echo "Installed SDKs:"
-  - dir "C:/Program Files/Microsoft SDKs/Windows"
+  - echo "Installed Program Files:"
+  - dir "C:\Program Files (x86)\"
 
   # install a newer mingw for i686 as the appveyor images don't have gcc 7+ for i686
   - if [%PYTHON_ARCH%]==[32] choco install -y mingw --forcex86 --force --version=7.3.0
@@ -115,7 +117,7 @@ install:
   - python -m pip install -U pip setuptools wheel
 
   # Install build requirements.
-  - pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
+  - python -m pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran,
   # and writes __config__.py suitable for Python 3.8. (Requires Numpy >= 1.18.0)
