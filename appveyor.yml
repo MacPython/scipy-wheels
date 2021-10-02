@@ -5,6 +5,8 @@ clone_depth: 50
 # No reason for us to restrict the number concurrent jobs
 max_jobs: 100
 
+image: Visual Studio 2017
+
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
@@ -87,7 +89,7 @@ install:
   - dir C:\
 
   - echo "Installed SDKs:"
-  - dir "C:/Program Files/Microsoft SDKs/Windows"
+  - dir "C:/Program Files (x86)/Microsoft SDKs/Windows"
 
   # install a newer mingw for i686 as the appveyor images don't have gcc 7+ for i686
   - if [%PYTHON_ARCH%]==[32] choco install -y mingw --forcex86 --force --version=7.3.0
@@ -154,14 +156,14 @@ build_script:
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
   # The find command below is just to print where the libraries are, for debugging.
-  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio 14.0" -type f -name 'msvcp*.dll'
+  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio 15.7" -type f -name 'msvcp*.dll'
   # * Python >=3.5
   # Copy over MSVC C++ runtime library, which Python.org does no bundle, but is required by us.
   # The version should match the compiler version, see https://wiki.python.org/moin/WindowsCompilers
   - mkdir "build\lib.win32-%PYTHON_VERSION%\scipy\.libs"
   - mkdir "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 15.7\VC\redist\x86\Microsoft.VC15.7CRT\msvcp15.7dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio 15.7\VC\redist\x64\Microsoft.VC15.7CRT\msvcp15.7dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
   # Build wheel using setup.py
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
