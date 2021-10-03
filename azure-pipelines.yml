@@ -54,12 +54,10 @@ jobs:
           MB_PYTHON_VERSION: "3.9"
           MB_PYTHON_OSX_VER: "10.9"
           PLAT: universal2
-#        osx-Py310:
-#          AZURE_PYTHON_VERSION: "3.9"
-#          MB_PYTHON_VERSION: "3.10"
-#          MB_PYTHON_OSX_VER: "10.9"
-#        osx-Py310-universal2:
-#          AZURE_PYTHON_VERSION: "3.9"
-#          MB_PYTHON_VERSION: "3.10"
-#          MB_PYTHON_OSX_VER: "10.9"
-#          PLAT: universal2
+        osx-Py310:
+          MB_PYTHON_VERSION: "3.10"
+          MB_PYTHON_OSX_VER: "10.9"
+        osx-Py310-universal2:
+          MB_PYTHON_VERSION: "3.10"
+          MB_PYTHON_OSX_VER: "10.9"
+          PLAT: universal2
