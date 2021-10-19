@@ -17,7 +17,7 @@ environment:
       CYTHON_BUILD_DEP: Cython==0.29.24
       PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.17.3
-      PYBIND11_BUILD_DEP: pybind11>=2.4.3
+      PYBIND11_BUILD_DEP: pybind11==2.7.0
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
       APPVEYOR_SKIP_FINALIZE_ON_EXIT: true
