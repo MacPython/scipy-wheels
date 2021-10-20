@@ -36,34 +36,6 @@ environment:
       NUMPY_TEST_DEP: oldest-supported-numpy
       CYTHON_BUILD_DEP: Cython
 
-    - PYTHON: C:\Python39
-      PYTHON_VERSION: 3.9
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.19.3
-      NUMPY_TEST_DEP: numpy==1.19.3
-      CYTHON_BUILD_DEP: Cython
-
-    - PYTHON: C:\Python39-x64
-      PYTHON_VERSION: 3.9
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.19.3
-      NUMPY_TEST_DEP: numpy==1.19.3
-      CYTHON_BUILD_DEP: Cython
-
-    - PYTHON: C:\Python38
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
-
-    - PYTHON: C:\Python38-x64
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
-
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
   - "ECHO \"%APPVEYOR_SCHEDULED_BUILD%\""
@@ -113,6 +85,7 @@ install:
 
       cd scipy
       git checkout $env:BUILD_COMMIT
+      git apply ../wip.patch
       $lib = python tools/openblas_support.py
       cd ..
       $destination = "$PYTHON\lib\openblas.a"

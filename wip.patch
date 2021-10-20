@@ -1,0 +1,28 @@
+--- a/scipy/spatial/src/distance_pybind.cpp
++++ b/scipy/spatial/src/distance_pybind.cpp
+@@ -225,10 +225,25 @@ ArrayDescriptor get_descriptor(const py::array& arr) {
+     const auto arr_strides = arr.strides();
+     desc.strides.assign(arr_strides, arr_strides + ndim);
+     for (intptr_t i = 0; i < ndim; ++i) {
++        if (arr_shape[i] <= 1) {
++            desc.strides[i] = 0;
++            continue;
++        }
++
+         if (desc.strides[i] % desc.element_size != 0) {
+             std::stringstream msg;
+             msg << "Arrays must be aligned to element size, but found stride of ";
+             msg << desc.strides[i] << " bytes for elements of size " << desc.element_size;
++            msg << ". \narray {\n  ndim=" << ndim << ",\n  refcount=" << Py_REFCNT(arr.ptr());
++            msg << ",\n  strides=[";
++            for (intptr_t i = 0; i < ndim; ++i) {
++                msg << " " << arr_strides[i];
++            }
++            msg << " ],\n  shape=[";
++            for (intptr_t i = 0; i < ndim; ++i) {
++                msg << " " << arr_shape[i];
++            }
++            msg << " ],\n}";
+             throw std::runtime_error(msg.str());
+         }
+         desc.strides[i] /= desc.element_size;
