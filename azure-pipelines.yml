@@ -41,11 +41,14 @@ jobs:
         32bit-amd64-linux-py38:
           MB_PYTHON_VERSION: "3.8"
           PLAT: "i686"
+          MB_ML_VER: "2010"
         amd64-linux-py37:
           MB_PYTHON_VERSION: "3.7"
+          MB_ML_VER: "2010"
         32bit-amd64-linux-py37:
           MB_PYTHON_VERSION: "3.7"
           PLAT: "i686"
+          MB_ML_VER: "2010"
 
   - template: azure-posix.yml
     parameters:
