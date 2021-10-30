@@ -32,6 +32,7 @@ function set_arch {
     export FFLAGS="$arch"
     export FARCH="$arch"
     export LDFLAGS="$arch"
+    export ARCHFLAGS="-arch x86_64"
 }
 
 function build_wheel_with_patch {
