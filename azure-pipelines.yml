@@ -9,9 +9,10 @@ schedules:
 
 pr:
 - master
+- v1.7.x
 
 variables:
-  BUILD_COMMIT: "47bb6feb"
+  BUILD_COMMIT: "5f587c6"
 
 jobs:
   - template: azure-posix.yml
@@ -19,26 +20,40 @@ jobs:
       name: linux
       vmImage: ubuntu-18.04
       matrix:
+        amd64-linux-py3.10:
+          AZURE_PYTHON_VERSION: "3.9"
+          MB_PYTHON_VERSION: "3.10"
+          MB_ML_VER: "2014"
+          DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
+
         amd64-linux-py39:
           MB_PYTHON_VERSION: "3.9"
+          MB_ML_VER: "2014"
         32bit-amd64-linux-py39:
           MB_PYTHON_VERSION: "3.9"
+          MB_ML_VER: "2010"
           PLAT: "i686"
+          DOCKER_TEST_IMAGE: "multibuild/xenial_{PLAT}"
+
         amd64-linux-py38:
           MB_PYTHON_VERSION: "3.8"
+          MB_ML_VER: "2014"
         32bit-amd64-linux-py38:
           MB_PYTHON_VERSION: "3.8"
           PLAT: "i686"
+          MB_ML_VER: "2010"
         amd64-linux-py37:
           MB_PYTHON_VERSION: "3.7"
+          MB_ML_VER: "2010"
         32bit-amd64-linux-py37:
           MB_PYTHON_VERSION: "3.7"
           PLAT: "i686"
+          MB_ML_VER: "2010"
 
   - template: azure-posix.yml
     parameters:
       name: macOS
-      vmImage: macOS-10.14
+      vmImage: macOS-10.15
       matrix:
         osx-Py37:
           MB_PYTHON_VERSION: "3.7"
@@ -48,3 +63,7 @@ jobs:
         osx-Py39:
           MB_PYTHON_VERSION: "3.9"
           MB_PYTHON_OSX_VER: "10.9"
+        osx-Py310:
+          MB_PYTHON_VERSION: "3.10"
+          MB_PYTHON_OSX_VER: "10.9"
+          PLAT: x86_64

@@ -5,17 +5,19 @@ clone_depth: 50
 # No reason for us to restrict the number concurrent jobs
 max_jobs: 100
 
+image: Visual Studio 2017
+
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
 
 environment:
   global:
-      MINGW_32: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
-      MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
-      CYTHON_BUILD_DEP: Cython==0.29.18
+      MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
+      MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
+      CYTHON_BUILD_DEP: Cython==0.29.24
       PYTHRAN_BUILD_DEP: pythran
       NUMPY_TEST_DEP: numpy==1.16.5
-      PYBIND11_BUILD_DEP: pybind11==2.4.3
+      PYBIND11_BUILD_DEP: pybind11==2.7.0
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
       APPVEYOR_SKIP_FINALIZE_ON_EXIT: true
@@ -23,10 +25,17 @@ environment:
       WHEELHOUSE_UPLOADER_SECRET:
         secure:
             jIyaD+VWmTlDGXThsKAkiLq8iljgYHiriq+kEUuW9tHj67R5BapLxLjbfco2nt8Y
-      BUILD_COMMIT: 47bb6feb
+      BUILD_COMMIT: 5f587c6
       DAILY_COMMIT: master
 
   matrix:
+    - PYTHON: C:\Python310-x64
+      PYTHON_VERSION: 3.10.0
+      PYTHON_ARCH: 64
+      NUMPY_BUILD_DEP: oldest-supported-numpy
+      NUMPY_TEST_DEP: oldest-supported-numpy
+      CYTHON_BUILD_DEP: Cython
+
     - PYTHON: C:\Python39
       PYTHON_VERSION: 3.9
       PYTHON_ARCH: 32
@@ -86,8 +95,11 @@ install:
   - cmd: echo "Filesystem root:"
   - dir C:\
 
-  - echo "Installed SDKs:"
-  - dir "C:/Program Files/Microsoft SDKs/Windows"
+  - echo "List Program Files:"
+  - dir "C:\Program Files (x86)\"
+
+  # install a newer mingw for i686 as the appveyor images don't have gcc 7+ for i686
+  - if [%PYTHON_ARCH%]==[32] choco install -y mingw --forcex86 --force --version=7.3.0
 
   - git submodule update --init
 
@@ -126,7 +138,7 @@ install:
   - python -m pip install -U pip setuptools wheel
 
   # Install build requirements.
-  - pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
+  - python -m pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
 
   # Replace numpy distutils with a version that can build with msvc + mingw-gfortran,
   # and writes __config__.py suitable for Python 3.8. (Requires Numpy >= 1.18.0)
