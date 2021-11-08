@@ -30,7 +30,7 @@ environment:
 
   matrix:
     - PYTHON: C:\Python310-x64
-      PYTHON_VERSION: 3.10.0
+      PYTHON_VERSION: '3.10'
       PYTHON_ARCH: 64
       NUMPY_BUILD_DEP: oldest-supported-numpy
       NUMPY_TEST_DEP: oldest-supported-numpy
