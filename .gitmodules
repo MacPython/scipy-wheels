@@ -9,7 +9,7 @@
 	url = https://github.com/h-vetinari/multibuild.git
 [submodule "gfortran-install"]
 	path = gfortran-install
-	url = https://github.com/MacPython/gfortran-install.git
+	url = https://github.com/h-vetinari/gfortran-install.git
 [submodule "numpy-distutils"]
 	path = numpy-distutils
 	url = https://github.com/numpy/numpy.git
