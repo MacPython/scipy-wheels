@@ -13,7 +13,6 @@ jobs:
       PLAT: "x86_64"
       NIGHTLY_BUILD_COMMIT: "master"
       DAILY_COMMIT: "master"
-      MB_ML_VER: "1"
     strategy:
       matrix:
         ${{ insert }}: ${{ parameters.matrix }}
