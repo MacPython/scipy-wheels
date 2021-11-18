@@ -54,7 +54,7 @@ The wheel-building repository:
 * does a fresh build of any required C / C++ libraries;
 * builds a scipy wheel, linking against these fresh builds;
 * processes the wheel using delocate_ (OSX) or auditwheel_ ``repair``
-  (Manylinux1_).  ``delocate`` and ``auditwheel`` copy the required dynamic
+  (manylinux_).  ``delocate`` and ``auditwheel`` copy the required dynamic
   libraries into the wheel and relinks the extension modules against the
   copied libraries;
 * uploads the built wheels to a Anaconda Cloud container - see "Using the
@@ -63,7 +63,7 @@ The wheel-building repository:
 
 The resulting wheels are therefore self-contained and do not need any external
 dynamic libraries apart from those provided as standard by OSX / Linux as
-defined by the manylinux1 standard.
+defined by the manylinux standards.
 
 Both Appveyor and Travis CI are using secret/encrypted keys to provide
 Anaconda Cloud upload credentials for merged PRs and weekly builds. The keys
@@ -126,7 +126,7 @@ and then upload them manually to pypi, or by using twine_.
 
 Of course, you will need permissions to upload to PyPI, for this to work.
 
-.. _manylinux1: https://www.python.org/dev/peps/pep-0513
+.. _manylinux: https://www.python.org/dev/peps/pep-0600
 .. _twine: https://pypi.python.org/pypi/twine
 .. _delocate: https://pypi.python.org/pypi/delocate
 .. _auditwheel: https://pypi.python.org/pypi/auditwheel
