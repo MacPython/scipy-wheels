@@ -10,11 +10,14 @@ can safely replace this file with your own version.
 """
 
 import os
+import sys
+import platform
 
-# on Windows SciPy loads important DLLs
-# and the code below aims to alleviate issues with DLL
-# path resolution portability with an absolute path DLL load
+
 if os.name == 'nt':
+    # on Windows SciPy loads important DLLs
+    # and the code below aims to alleviate issues with DLL
+    # path resolution portability with an absolute path DLL load
     from ctypes import WinDLL
     import glob
     # convention for storing / loading the DLL from
@@ -61,3 +64,9 @@ if os.name == 'nt':
                 WinDLL(os.path.abspath(filename))
         finally:
             os.chdir(owd)
+elif sys.platform == 'darwin' and platform.machine() == 'arm64':
+    # On arm64 macOS the OpenBLAS runtimes of NumPy and SciPy don't seem to work
+    # well together unless this timeout limit is set - it results in very slow
+    # performance for some linalg functionality.
+    # See https://github.com/scipy/scipy/issues/15050 for details.
+    os.environ['OPENBLAS_THREAD_TIMEOUT'] = '1'
