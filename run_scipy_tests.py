@@ -6,6 +6,7 @@ Run scipy tests allowing for pytest and nosetests
 
 import sys
 import argparse
+import multiprocessing
 
 
 def main():

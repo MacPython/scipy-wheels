@@ -55,6 +55,10 @@ jobs:
           MB_PYTHON_VERSION: "3.8"
           MB_PYTHON_OSX_VER: "10.9"
           PLAT: universal2
+        osx-Py38_arm64:
+          MB_PYTHON_VERSION: "3.8"
+          MB_PYTHON_OSX_VER: "12.0"
+          PLAT: arm64
         osx-Py39:
           MB_PYTHON_VERSION: "3.9"
           MB_PYTHON_OSX_VER: "10.9"
@@ -62,7 +66,19 @@ jobs:
           MB_PYTHON_VERSION: "3.9"
           MB_PYTHON_OSX_VER: "10.9"
           PLAT: universal2
+        osx-Py39_arm64:
+          MB_PYTHON_VERSION: "3.9"
+          MB_PYTHON_OSX_VER: "12.0"
+          PLAT: arm64
+        osx-Py310:
+          MB_PYTHON_VERSION: "3.10"
+          MB_PYTHON_OSX_VER: "10.9"
+          PLAT: x86_64
         osx-Py310-universal2:
           MB_PYTHON_VERSION: "3.10"
           MB_PYTHON_OSX_VER: "10.9"
           PLAT: universal2
+        osx-Py310_arm64:
+          MB_PYTHON_VERSION: "3.10"
+          MB_PYTHON_OSX_VER: "12.0"
+          PLAT: arm64
