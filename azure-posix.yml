@@ -80,6 +80,7 @@ jobs:
           source multibuild/travis_steps.sh
           install_run $PLAT
         displayName: Install wheel and test
+        condition: ne(variables['PLAT'], 'arm64')
 
       - bash: |
           echo "##vso[task.prependpath]$CONDA/bin"
