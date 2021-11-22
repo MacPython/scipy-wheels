@@ -69,13 +69,13 @@ jobs:
           PLAT: x86_64
         osx-Py38_arm64:
           MB_PYTHON_VERSION: "3.8"
-          MB_PYTHON_OSX_VER: "12.0"
+          MB_PYTHON_OSX_VER: "10.9"
           PLAT: arm64
         osx-Py39_arm64:
           MB_PYTHON_VERSION: "3.9"
-          MB_PYTHON_OSX_VER: "12.0"
+          MB_PYTHON_OSX_VER: "10.9"
           PLAT: arm64
         osx-Py310_arm64:
           MB_PYTHON_VERSION: "3.10"
-          MB_PYTHON_OSX_VER: "12.0"
+          MB_PYTHON_OSX_VER: "11.0"
           PLAT: arm64
