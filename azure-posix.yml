@@ -83,6 +83,12 @@ jobs:
         condition: ne(variables['PLAT'], 'arm64')
 
       - bash: |
+          set -xe
+          for file in `find ./wheelhouse -type f -name '*11_0_arm64*.whl'`; do mv -v "$file" "${file/11_0_arm64/12_0_arm64}"; done
+        displayName: "Rename MacOS arm64 wheels for version 12.0 minimum"
+        condition: eq(variables['PLAT'], 'arm64')
+
+      - bash: |
           echo "##vso[task.prependpath]$CONDA/bin"
           sudo chown -R $USER $CONDA
         displayName: Add conda to PATH
