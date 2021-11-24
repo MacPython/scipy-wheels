@@ -12,7 +12,7 @@ pr:
 - v1.7.x
 
 variables:
-  BUILD_COMMIT: "3f33531"
+  BUILD_COMMIT: "59e6539c"
 
 jobs:
   - template: azure-posix.yml
