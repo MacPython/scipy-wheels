@@ -198,6 +198,8 @@ test_script:
   - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
+  - ls ..\scipy\dist
+  - python verify_init.py ..\scipy\dist
   # Upload test results to Appveyor
   - ps: |
       If (Test-Path .\junit-results.xml) {
