@@ -12,6 +12,7 @@ pr:
 
 variables:
   BUILD_COMMIT: "master"
+  MACOSX_DEPLOYMENT_TARGET: "10.9"
 
 jobs:
   - template: azure-posix.yml
