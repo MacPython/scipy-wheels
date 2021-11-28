@@ -89,6 +89,11 @@ jobs:
         condition: eq(variables['PLAT'], 'arm64')
 
       - bash: |
+          set -xe
+          python verify_init.py ./wheelhouse
+        displayName: "Check for appropriate contents of _distributor_init.py"
+
+      - bash: |
           echo "##vso[task.prependpath]$CONDA/bin"
           sudo chown -R $USER $CONDA
         displayName: Add conda to PATH
