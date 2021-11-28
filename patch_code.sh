@@ -13,5 +13,5 @@ if [ -z "$IS_OSX" ]; then
     cat LICENSE_linux.txt >> $repo_dir/LICENSE.txt
 else
     cat LICENSE_osx.txt >> $repo_dir/LICENSE.txt
-    cp _distributor_init.py scipy/_distributor_init.py
+    cp _distributor_init.py scipy/scipy/_distributor_init.py
 fi
