@@ -157,7 +157,7 @@ build_script:
       $cwd = Get-Location
       ls $cwd
       rm -Force $cwd/scipy/scipy/_distributor_init.py
-      mv $cwd/_distributor_init.py $cwd/scipy/scipy/
+      cp $cwd/_distributor_init.py $cwd/scipy/scipy/
       cd scipy
   # Append license text relevant for the built wheel
   - type ..\LICENSE_win32.txt >> LICENSE.txt
@@ -212,6 +212,10 @@ test_script:
   - python ..\run_scipy_tests.py %TEST_MODE% -- -n6 --junitxml=%cd%\junit-results.xml -rfEX
 
 after_test:
+  - cd ..
+  - ls scipy\dist
+  - python verify_init.py scipy\dist
+  - cd tmp_test
   # Upload test results to Appveyor
   - ps: |
       If (Test-Path .\junit-results.xml) {
