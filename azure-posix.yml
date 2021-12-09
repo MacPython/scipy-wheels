@@ -90,6 +90,12 @@ jobs:
 
       - bash: |
           set -xe
+          for file in `find ./wheelhouse -type f -name '*10_9_universal2.whl'`; do mv -v "$file" "${file/10_9_universal2/12_0_universal2}"; done
+        displayName: "Rename MacOS universal2 wheels for version 12.0 minimum"
+        condition: eq(variables['PLAT'], 'universal2')
+
+      - bash: |
+          set -xe
           python verify_init.py ./wheelhouse
         displayName: "Check for appropriate contents of _distributor_init.py"
 
