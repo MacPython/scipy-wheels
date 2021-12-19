@@ -9,6 +9,7 @@ schedules:
 
 pr:
 - master
+- v1.8.x
 
 variables:
   BUILD_COMMIT: "4dc5e3bdee"
