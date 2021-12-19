@@ -94,6 +94,16 @@ jobs:
         displayName: "Rename MacOS universal2 wheels for version 12.0 minimum"
         condition: eq(variables['PLAT'], 'universal2')
 
+      # universal2 CI jobs apparently build arm64 thin wheels
+      # as well, which have the 11_0 names we do not want to
+      # upload (see: gh-155)
+      - bash: |
+          set -xe
+          rm -v ./wheelhouse/*arm64.whl
+          ls -tlrh ./wheelhouse
+        displayName: "Prevent universal2 jobs from uploading their thin wheels"
+        condition: eq(variables['PLAT'], 'universal2')
+
       - bash: |
           set -xe
           python verify_init.py ./wheelhouse
