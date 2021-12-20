@@ -86,11 +86,11 @@ jobs:
           set -xe
           for file in `find ./wheelhouse -type f -name '*11_0_arm64*.whl'`; do mv -v "$file" "${file/11_0_arm64/12_0_arm64}"; done
         displayName: "Rename MacOS arm64 wheels for version 12.0 minimum"
-        condition: eq(variables['PLAT'], 'arm64')
+        condition: or(eq(variables['PLAT'], 'arm64'), eq(variables['PLAT'], 'universal2'))
 
       - bash: |
           set -xe
-          for file in `find ./wheelhouse -type f -name '*10_9_universal2.whl'`; do mv -v "$file" "${file/10_9_universal2/12_0_universal2}"; done
+          for file in `find ./wheelhouse -type f -name '*10_9_universal2.whl'`; do mv -v "$file" "${file/macosx_10_9_universal2/macosx_12_0_universal2.macosx_10_9_x86_64}"; done
         displayName: "Rename MacOS universal2 wheels for version 12.0 minimum"
         condition: eq(variables['PLAT'], 'universal2')
 
