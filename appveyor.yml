@@ -15,7 +15,7 @@ environment:
       MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
       MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
       CYTHON_BUILD_DEP: Cython==0.29.24
-      PYTHRAN_BUILD_DEP: pythran
+      PYTHRAN_BUILD_DEP: pythran==0.10.0
       NUMPY_TEST_DEP: numpy==1.17.3
       PYBIND11_BUILD_DEP: pybind11==2.7.0
       TEST_MODE: fast
@@ -34,35 +34,35 @@ environment:
       PYTHON_ARCH: 64
       NUMPY_BUILD_DEP: oldest-supported-numpy
       NUMPY_TEST_DEP: oldest-supported-numpy
-      CYTHON_BUILD_DEP: Cython
+      CYTHON_BUILD_DEP: Cython==0.29.25
 
     - PYTHON: C:\Python39
       PYTHON_VERSION: 3.9
       PYTHON_ARCH: 32
       NUMPY_BUILD_DEP: numpy==1.19.3
       NUMPY_TEST_DEP: numpy==1.19.3
-      CYTHON_BUILD_DEP: Cython
+      CYTHON_BUILD_DEP: Cython==0.29.25
 
     - PYTHON: C:\Python39-x64
       PYTHON_VERSION: 3.9
       PYTHON_ARCH: 64
       NUMPY_BUILD_DEP: numpy==1.19.3
       NUMPY_TEST_DEP: numpy==1.19.3
-      CYTHON_BUILD_DEP: Cython
+      CYTHON_BUILD_DEP: Cython==0.29.25
 
     - PYTHON: C:\Python38
       PYTHON_VERSION: 3.8
       PYTHON_ARCH: 32
       NUMPY_BUILD_DEP: numpy==1.17.3
       NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
+      CYTHON_BUILD_DEP: Cython==0.29.25
 
     - PYTHON: C:\Python38-x64
       PYTHON_VERSION: 3.8
       PYTHON_ARCH: 64
       NUMPY_BUILD_DEP: numpy==1.17.3
       NUMPY_TEST_DEP: numpy==1.17.3
-      CYTHON_BUILD_DEP: Cython
+      CYTHON_BUILD_DEP: Cython==0.29.25
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
@@ -120,8 +120,14 @@ install:
       cp $lib $destination
       ls $destination
 
-  # Upgrade to the latest pip, setuptools, and wheel.
+  # Upgrade to the latest pip and wheel
   - python -m pip install -U pip setuptools wheel
+
+  # TODO: Windows builds should use `pip wheel` or
+  # similar so that pyproject.toml bounds are
+  # respected
+  # see: gh-159
+  - python -m pip install setuptools==59.5.0
 
   # Install build requirements.
   - python -m pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
