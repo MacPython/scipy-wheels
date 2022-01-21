@@ -48,6 +48,12 @@ init:
         $env:CONTAINER = "wheels"
         $env:UPLOAD_ARGS = "--no-update-index"
       }
+  - ps: |
+      Get-Childitem –Path "C:\Program Files\LLVM" -Include *clang-cl* -File -Recurse -ErrorAction SilentlyContinue
+      $env:PYTHRANRC = "C:\.pythranrc"
+      $content = "[compiler]`r`nCC=C:\Program Files\LLVM\bin\clang-cl.exe`r`nCXX=C:\Program Files\LLVM\bin\clang-cl.exe`r`n"
+      New-Item -Path C:\ -Name ".pythranrc" -ItemType "file" -Value $content
+      Get-Content -Path "C:\.pythranrc"
 
 install:
   - cmd: echo "Filesystem root:"
@@ -153,6 +159,8 @@ build_script:
       $env:Path += ";$MINGW"
       $env:NPY_NUM_BUILD_JOBS = "4"
   - git submodule update --init
+  - ps: $env:PYTHRANRC = "C:\.pythranrc"
+  - ps: Get-Content -Path "C:\.pythranrc"
   - python setup.py bdist_wheel
   - ps: |
       # Upload artifact to Appveyor immediately after build
