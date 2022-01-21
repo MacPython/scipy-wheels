@@ -181,6 +181,9 @@ build_script:
       $env:Path += ";$MINGW"
       $env:NPY_NUM_BUILD_JOBS = "4"
   - git submodule update --init
+  # temporarily disable pythran
+  # see: https://github.com/MacPython/scipy-wheels/issues/162
+  - ps: $env:SCIPY_USE_PYTHRAN = 0
   - python setup.py bdist_wheel
   - ps: |
       # Upload artifact to Appveyor immediately after build
