@@ -212,14 +212,14 @@ after_test:
   - python verify_init.py scipy\dist
   - cd tmp_test
   # Upload test results to Appveyor
-  #- ps: |
-  #   If (Test-Path .\junit-results.xml) {
-  #     (new-object net.webclient).UploadFile(
-  #       "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)",
-  #       (Resolve-Path .\junit-results.xml)
-  #     )
-  #   }
-  #   $LastExitCode = 0
+  - ps: |
+      If (Test-Path .\junit-results.xml) {
+        (new-object net.webclient).UploadFile(
+          "https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)",
+          (Resolve-Path .\junit-results.xml)
+        )
+      }
+      $LastExitCode = 0
 
   # Remove old or huge cache files to hopefully not exceed the 1GB cache limit.
   #
