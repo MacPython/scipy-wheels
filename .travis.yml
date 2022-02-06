@@ -7,7 +7,7 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=master
+        - BUILD_COMMIT=main
         - PLAT=x86_64
         - CYTHON_BUILD_DEP="Cython==0.29.24"
         - PYTHRAN_BUILD_DEP="pythran"
@@ -20,7 +20,7 @@ env:
         - secure:
             "fne+dO/N+Zv8pusPVO6S58p7lFWLDIwjXwf/IgBPxGSdDFEQVY8xl0+nGPNNzYZfmX/inBrb/3+8el9sggC+X7KG6mGmCtcpwems2sWn6XY5OQ+kWl8SEdDs2SiAsrieqbC3d1cmMoHyddX/YdGWVSdIji70nRER0j9wjNwYNlE="
         # Commit when running from master branch
-        - DAILY_COMMIT=master
+        - DAILY_COMMIT=main
 
 language: python
 dist: bionic
