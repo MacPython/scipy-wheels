@@ -106,7 +106,7 @@ jobs:
         - MB_PYTHON_VERSION=3.10
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
+        - DOCKER_TEST_IMAGE=quay.io/pypa/manylinux2014_x86_64:2022-03-31-361e6b6
         - MB_ML_VER=2014
       workspaces:
         use: ws5
@@ -121,7 +121,7 @@ jobs:
         - MB_PYTHON_VERSION=3.9
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
+        - DOCKER_TEST_IMAGE=quay.io/pypa/manylinux2014_x86_64:2022-03-31-361e6b6
         - MB_ML_VER=2014
       workspaces:
         use: ws4
@@ -136,7 +136,7 @@ jobs:
         - MB_PYTHON_VERSION=3.8
         - PLAT=aarch64
         - CYTHON_BUILD_DEP="Cython"
-        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
+        - DOCKER_TEST_IMAGE=quay.io/pypa/manylinux2014_x86_64:2022-03-31-361e6b6
         - MB_ML_VER=2014
       workspaces:
         use: ws3
