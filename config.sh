@@ -4,6 +4,7 @@
 source gfortran-install/gfortran_utils.sh
 
 function build_wheel {
+    git config --global --add safe.directory "*"
     export FFLAGS="$FFLAGS -fPIC"
     if [ -z "$IS_OSX" ]; then
         build_libs $PLAT
@@ -16,6 +17,7 @@ function build_wheel {
 }
 
 function build_libs {
+    git config --global --add safe.directory "*"
     PYTHON_EXE=`which python`
     $PYTHON_EXE -c"import platform; print('platform.uname().machine', platform.uname().machine)"
     basedir=$($PYTHON_EXE scipy/tools/openblas_support.py)
@@ -25,6 +27,7 @@ function build_libs {
 }
 
 function build_wheel_with_patch {
+    git config --global --add safe.directory "*"
     # Patch numpy distutils to fix OpenBLAS build
     (cd .. && ./patch_numpy.sh)
     bdist_wheel_cmd $@
@@ -44,6 +47,7 @@ function build_osx_wheel {
 }
 
 function run_tests {
+    git config --global --add safe.directory "*"
     # Runs tests on installed distribution from an empty directory
     # OSX tests seem to time out pretty often
     if [[ -z "$IS_OSX" && `uname -m` != 'aarch64' ]]; then
@@ -64,6 +68,7 @@ function run_tests {
 }
 
 function install_run {
+    git config --global --add safe.directory "*"
     # Override multibuild test running command, to preinstall packages
     # that have to be installed before TEST_DEPENDS.
     set -ex
