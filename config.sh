@@ -89,6 +89,7 @@ function clean_code {
     # to determine the version.  Give submodule proper git directory
     fill_submodule "$repo_dir"
     (cd $repo_dir \
+        && git config --global --add safe.directory "*" \
         && git fetch origin \
         && git checkout $build_commit \
         && git clean -fxd \
