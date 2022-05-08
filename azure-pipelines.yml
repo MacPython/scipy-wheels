@@ -12,7 +12,7 @@ pr:
 - v1.8.x
 
 variables:
-  BUILD_COMMIT: "a6a2fe5"
+  BUILD_COMMIT: "b227e3ab"
 
 jobs:
   - template: azure-posix.yml
