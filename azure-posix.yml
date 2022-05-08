@@ -60,7 +60,7 @@ jobs:
           set -ex
           echo building for commit "$BUILD_COMMIT"
 
-          pip install --upgrade virtualenv wheel "setuptools<60.0.0"
+          pip install --upgrade virtualenv wheel setuptools
           BUILD_DEPENDS="wheel oldest-supported-numpy Cython>=0.29.24 pybind11>=2.4.3 pythran"
 
           source multibuild/common_utils.sh
