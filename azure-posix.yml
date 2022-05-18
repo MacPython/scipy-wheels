@@ -62,7 +62,7 @@ jobs:
 
           pip install --upgrade virtualenv wheel
           pip install "setuptools<60.0.0"
-          BUILD_DEPENDS="wheel oldest-supported-numpy Cython>=0.29.24 pybind11>=2.4.3 pythran"
+          BUILD_DEPENDS="wheel oldest-supported-numpy Cython>=0.29.24 pybind11>=2.4.3 pythran setuptools<60.0.0"
 
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
