@@ -121,7 +121,7 @@ install:
       ls $destination
 
   # Upgrade to the latest pip, setuptools, and wheel.
-  - python -m pip install -U pip setuptools wheel
+  - python -m pip install -U pip "setuptools==59.5.0" wheel
 
   # Install build requirements.
   - python -m pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
