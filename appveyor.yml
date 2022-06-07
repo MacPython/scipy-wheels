@@ -149,14 +149,14 @@ build_script:
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
   # The find command below is just to print where the libraries are, for debugging.
-  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio 14.0" -type f -name 'msvcp*.dll'
+  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio" -type f -name 'msvcp*.dll'
   # * Python >=3.5
   # Copy over MSVC C++ runtime library, which Python.org does no bundle, but is required by us.
   # The version should match the compiler version, see https://wiki.python.org/moin/WindowsCompilers
   - mkdir "build\lib.win32-%PYTHON_VERSION%\scipy\.libs"
   - mkdir "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x86\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x64\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
   # Build wheel using setup.py
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
