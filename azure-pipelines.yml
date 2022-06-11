@@ -24,10 +24,10 @@ jobs:
           MB_PYTHON_VERSION: "3.9"
           MB_ML_VER: "2010"
           PLAT: "i686"
-          DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
+          DOCKER_TEST_IMAGE: "multibuild/xenial_{PLAT}"
 
         32bit-amd64-linux-py38:
           MB_PYTHON_VERSION: "3.8"
           PLAT: "i686"
           MB_ML_VER: "2010"
-          DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
+          DOCKER_TEST_IMAGE: "multibuild/xenial_{PLAT}"
