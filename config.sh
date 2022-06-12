@@ -71,7 +71,7 @@ function install_run {
     $PYTHON_EXE -m pip install $(pip_opts) setuptools_scm
 
     # Copypaste from multibuild/common_utils.sh:install_run
-    install_wheel
+    install_wheel --only-binary :numpy:
     mkdir tmp_for_test
     (cd tmp_for_test && run_tests)
 }
