@@ -55,7 +55,7 @@ function run_tests {
     $PYTHON_EXE ../check_installed_package.py
     # Run tests
     if [[ -z "$IS_OSX" && `uname -m` != 'aarch64' ]]; then
-        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n2 -rfEX -vv
+        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n2 -rfEX
     else
         $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n8 -rfEX
     fi
@@ -71,7 +71,7 @@ function install_run {
     $PYTHON_EXE -m pip install $(pip_opts) setuptools_scm
 
     # Copypaste from multibuild/common_utils.sh:install_run
-    install_wheel --only-binary :numpy:
+    install_wheel --prefer-binary
     mkdir tmp_for_test
     (cd tmp_for_test && run_tests)
 }
