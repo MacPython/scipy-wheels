@@ -55,7 +55,7 @@ function run_tests {
     $PYTHON_EXE ../check_installed_package.py
     # Run tests
     if [[ -z "$IS_OSX" && `uname -m` != 'aarch64' ]]; then
-        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n2 -rfEX
+        $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n2 -rfEX -vv
     else
         $PYTHON_EXE ../run_scipy_tests.py $testmode -- -n8 -rfEX
     fi
