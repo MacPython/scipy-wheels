@@ -5,7 +5,7 @@ clone_depth: 50
 # No reason for us to restrict the number concurrent jobs
 max_jobs: 100
 
-image: Visual Studio 2017
+image: Visual Studio 2019
 
 cache:
   - '%LOCALAPPDATA%\pip\Cache'
@@ -13,10 +13,10 @@ cache:
 environment:
   global:
       MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
-      MINGW_64: C:\mingw-w64\x86_64-7.3.0-posix-seh-rt_v5-rev0\mingw64\bin
+      MINGW_64: C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin
       CYTHON_BUILD_DEP: Cython==0.29.24
       PYTHRAN_BUILD_DEP: pythran
-      NUMPY_TEST_DEP: numpy==1.17.3
+      NUMPY_TEST_DEP: numpy==1.18.5
       PYBIND11_BUILD_DEP: pybind11==2.7.0
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -25,8 +25,8 @@ environment:
       WHEELHOUSE_UPLOADER_SECRET:
         secure:
             jIyaD+VWmTlDGXThsKAkiLq8iljgYHiriq+kEUuW9tHj67R5BapLxLjbfco2nt8Y
-      BUILD_COMMIT: master
-      DAILY_COMMIT: master
+      BUILD_COMMIT: main
+      DAILY_COMMIT: main
 
   matrix:
     - PYTHON: C:\Python310-x64
@@ -53,15 +53,15 @@ environment:
     - PYTHON: C:\Python38
       PYTHON_VERSION: 3.8
       PYTHON_ARCH: 32
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
+      NUMPY_BUILD_DEP: numpy==1.18.5
+      NUMPY_TEST_DEP: numpy==1.18.5
       CYTHON_BUILD_DEP: Cython
 
     - PYTHON: C:\Python38-x64
       PYTHON_VERSION: 3.8
       PYTHON_ARCH: 64
-      NUMPY_BUILD_DEP: numpy==1.17.3
-      NUMPY_TEST_DEP: numpy==1.17.3
+      NUMPY_BUILD_DEP: numpy==1.18.5
+      NUMPY_TEST_DEP: numpy==1.18.5
       CYTHON_BUILD_DEP: Cython
 
 init:
@@ -121,7 +121,7 @@ install:
       ls $destination
 
   # Upgrade to the latest pip, setuptools, and wheel.
-  - python -m pip install -U pip setuptools wheel
+  - python -m pip install -U pip "setuptools==59.5.0" wheel
 
   # Install build requirements.
   - python -m pip install "%CYTHON_BUILD_DEP%" "%PYTHRAN_BUILD_DEP%" "%NUMPY_BUILD_DEP%" "%PYBIND11_BUILD_DEP%"
@@ -149,14 +149,14 @@ build_script:
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Copy over additional DLLs to bundle to the wheels.
   # The find command below is just to print where the libraries are, for debugging.
-  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio 14.0" -type f -name 'msvcp*.dll'
+  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio" -type f -name 'msvcp*.dll'
   # * Python >=3.5
   # Copy over MSVC C++ runtime library, which Python.org does no bundle, but is required by us.
   # The version should match the compiler version, see https://wiki.python.org/moin/WindowsCompilers
   - mkdir "build\lib.win32-%PYTHON_VERSION%\scipy\.libs"
   - mkdir "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x86\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\redist\x64\Microsoft.VC140.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x86\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
+  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x64\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
   # Build wheel using setup.py
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH

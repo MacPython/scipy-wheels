@@ -11,8 +11,8 @@ jobs:
     variables:
       REPO_DIR: "scipy"
       PLAT: "x86_64"
-      NIGHTLY_BUILD_COMMIT: "master"
-      DAILY_COMMIT: "master"
+      NIGHTLY_BUILD_COMMIT: "main"
+      DAILY_COMMIT: "main"
     strategy:
       matrix:
         ${{ insert }}: ${{ parameters.matrix }}
@@ -109,7 +109,7 @@ jobs:
 
       - bash: |
           set -e
-          if [ "$BUILD_COMMIT" == "master" ]; then
+          if [ "$BUILD_COMMIT" == "main" ]; then
             ANACONDA_ORG="scipy-wheels-nightly"
             TOKEN="$MAPPED_SCIPY_WHEELS_NIGHTLY"
             echo getting SCIPY_WHEELS_NIGHTLY
