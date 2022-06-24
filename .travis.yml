@@ -151,7 +151,7 @@ before_install:
           CONTAINER=wheels;
           UPLOAD_ARGS="--no-update-index";
       fi
-    - BUILD_DEPENDS="wheel oldest-supported-numpy $CYTHON_BUILD_DEP $PYTHRAN_BUILD_DEP $PYBIND11_BUILD_DEP"
+    - BUILD_DEPENDS="wheel oldest-supported-numpy $CYTHON_BUILD_DEP $PYTHRAN_BUILD_DEP $PYBIND11_BUILD_DEP setuptools<60.0.0"
     - TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
     - source multibuild/common_utils.sh
     - source multibuild/travis_steps.sh
