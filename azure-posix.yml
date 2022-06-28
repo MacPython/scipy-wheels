@@ -60,7 +60,8 @@ jobs:
           set -ex
           echo building for commit "$BUILD_COMMIT"
 
-          PYTHON_EXE -m pip install --upgrade virtualenv build
+          pip install --upgrade virtualenv
+          BUILD_DEPENDS="build"
 
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
