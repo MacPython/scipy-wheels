@@ -60,8 +60,7 @@ jobs:
           set -ex
           echo building for commit "$BUILD_COMMIT"
 
-          pip install --upgrade virtualenv wheel
-          BUILD_DEPENDS="wheel oldest-supported-numpy Cython>=0.29.24 pybind11>=2.4.3 pythran setuptools<60.0.0"
+          python -m pip install --upgrade build
 
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
@@ -75,7 +74,7 @@ jobs:
 
       - bash: |
           set -xe
-          TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
+          TEST_DEPENDS="numpy==1.22.3 pytest pytest-xdist pytest-faulthandler pytest-env"
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
           install_run $PLAT
