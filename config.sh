@@ -52,10 +52,11 @@ function run_tests {
 
 function install_run {
     # Override multibuild test running command, to preinstall packages
-    # that have to be installed before TEST_DEPENDS.
+    # that have to be installed before TEST_DEPENDS. Note that `pip_opts`
+    # currently just adds `--find-links $MANYLINUX_URL` on Linux
     set -ex
     PIP_CMD="$PYTHON_EXE -m pip"
-    $PYTHON_EXE -m pip install $(pip_opts) setuptools_scm
+    $PYTHON_EXE -m pip install $(pip_opts)
 
     # Copypaste from multibuild/common_utils.sh:install_run
     install_wheel --prefer-binary
