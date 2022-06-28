@@ -81,7 +81,7 @@ install:
   - git submodule update --init scipy
 
   # Check out the commit or tag that we want to build
-  - git checkout $env:BUILD_COMMIT
+  - git -C scipy checkout $env:BUILD_COMMIT
 
   # Download and install static "openblas.a"
   - ps: |
