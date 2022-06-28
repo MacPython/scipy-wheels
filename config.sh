@@ -11,9 +11,10 @@ function pyproject_wheel_cmd {
 }
 
 function build_wheel {
+    local repo_dir=${1:-$REPO_DIR}
     if [ -z "$IS_OSX" ]; then
         copy_libs $PLAT
-        pyproject_wheel_cmd $@
+        build_wheel_cmd "pyproject_wheel_cmd" "$repo_dir"
     else
         install_gfortran
         # `wrap_wheel_builder` is a no-op except on macOS when cross-compiling
