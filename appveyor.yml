@@ -13,7 +13,6 @@ cache:
 environment:
   global:
       MINGW_64: C:\rtools40\ucrt64\bin
-      NUMPY_TEST_DEP: numpy==1.19.5
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
       APPVEYOR_SKIP_FINALIZE_ON_EXIT: true
@@ -128,10 +127,7 @@ build_script:
 
 before_test:
   # Install test requirements.
-  - python -m pip install pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath matplotlib
-
-  # Upgrade numpy to the version used for testing
-  - python -m pip install "%NUMPY_TEST_DEP%"
+  - python -m pip install numpy pytest pytest-xdist pytest-faulthandler pytest-env Pillow mpmath matplotlib
 
 test_script:
   - cd ..
