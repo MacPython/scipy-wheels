@@ -3,44 +3,31 @@
 # See env_vars.sh for extra environment variables
 source gfortran-install/gfortran_utils.sh
 
+function pyproject_wheel_cmd {
+    # Build wheels with `build` (uses build isolation, and dependencies listed
+    # in pyproject.toml)
+    $PYTHON_EXE -m build --wheel
+}
+
 function build_wheel {
-    export FFLAGS="$FFLAGS -fPIC"
     if [ -z "$IS_OSX" ]; then
-        build_libs $PLAT
-        # Work round build dependencies spec in pyproject.toml
-        build_bdist_wheel $@
+        copy_libs $PLAT
+        pyproject_wheel_cmd $@
     else
         install_gfortran
-        wrap_wheel_builder build_osx_wheel $@
+        # `wrap_wheel_builder` is a no-op except on macOS when cross-compiling
+        # to arm64
+        wrap_wheel_builder pyproject_wheel_cmd $@
     fi
 }
 
-function build_libs {
+function copy_libs {
     PYTHON_EXE=`which python`
     $PYTHON_EXE -c"import platform; print('platform.uname().machine', platform.uname().machine)"
     basedir=$($PYTHON_EXE scipy/tools/openblas_support.py)
     $use_sudo cp -r $basedir/lib/* $BUILD_PREFIX/lib
     $use_sudo cp $basedir/include/* $BUILD_PREFIX/include
     export OPENBLAS=$BUILD_PREFIX
-}
-
-function build_wheel_with_patch {
-    # Patch numpy distutils to fix OpenBLAS build
-    (cd .. && ./patch_numpy.sh)
-    bdist_wheel_cmd $@
-}
-
-function build_osx_wheel {
-    local repo_dir=${1:-$REPO_DIR}
-    if [ ! -z "$FC" ]; then
-       export F77=$FC
-       export F90=$FC
-    fi
-    build_libs
-    # Work round build dependencies spec in pyproject.toml
-    # See e.g.
-    # https://travis-ci.org/matthew-brett/scipy-wheels/jobs/387794282
-    build_wheel_cmd "build_wheel_with_patch" "$repo_dir"
 }
 
 function run_tests {
