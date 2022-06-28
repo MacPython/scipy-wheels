@@ -12,8 +12,7 @@ cache:
 
 environment:
   global:
-      MINGW_32: C:\ProgramData\chocolatey\lib\mingw\tools\install\mingw32\bin
-      MINGW_64: C:\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin
+      MINGW_64: C:\rtools40\ucrt64\bin
       NUMPY_TEST_DEP: numpy==1.19.5
       TEST_MODE: fast
       APPVEYOR_SAVE_CACHE_ON_ERROR: true
@@ -31,21 +30,14 @@ environment:
       PYTHON_ARCH: 64
       NUMPY_TEST_DEP: 1.22.3
 
-    - PYTHON: C:\Python39
-      PYTHON_VERSION: 3.9
-      PYTHON_ARCH: 32
-
-    - PYTHON: C:\Python39-x64
-      PYTHON_VERSION: 3.9
-      PYTHON_ARCH: 64
-
-    - PYTHON: C:\Python38
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 32
-
-    - PYTHON: C:\Python38-x64
-      PYTHON_VERSION: 3.8
-      PYTHON_ARCH: 64
+# FIXME: commented out for initial testing
+#    - PYTHON: C:\Python39-x64
+#      PYTHON_VERSION: 3.9
+#      PYTHON_ARCH: 64
+#
+#    - PYTHON: C:\Python38-x64
+#      PYTHON_VERSION: 3.8
+#      PYTHON_ARCH: 64
 
 init:
   - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
@@ -67,8 +59,8 @@ install:
   - echo "List Program Files:"
   - dir "C:\Program Files (x86)\"
 
-  # install a newer mingw for i686 as the appveyor images don't have gcc 7+ for i686
-  - if [%PYTHON_ARCH%]==[32] choco install -y mingw --forcex86 --force --version=7.3.0
+  # install MinGW-w64
+  - choco install -y rtools --no-progress
 
   - git submodule update --init
 
@@ -89,26 +81,22 @@ install:
   # Get needed submodules
   - git submodule update --init scipy
 
-  # Download and install static "openblas.a" to PYTHON\lib
+  # Download and install static "openblas.a"
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
       $PYTHON = $env:PYTHON
 
-      cd scipy
-      git checkout $env:BUILD_COMMIT
-      $lib = python tools/openblas_support.py
-      cd ..
-      $destination = "$PYTHON\lib\openblas.a"
-
-      cp $lib $destination
-      ls $destination
+      choco install unzip -y
+      choco install wget -y
+      wget https://github.com/scipy/scipy-ci-artifacts/raw/main/openblas_32_if.zip
+      unzip -d c:\ openblas_32_if.zip
+      $env:PKG_CONFIG_PATH = "c:\opt\openblas\if_32\64\lib\pkgconfig;"
 
   # Upgrade to the latest pip, and install the `build` package
   - python -m pip install -U pip build
 
 build_script:
-  # we use a distribution file to assist in loading
-  # DLLs
+  # we use a distribution file to assist in loading DLLs
   - ps: |
       $cwd = Get-Location
       ls $cwd
@@ -117,34 +105,12 @@ build_script:
       cd scipy
   # Append license text relevant for the built wheel
   - type ..\LICENSE_win32.txt >> LICENSE.txt
-  # Copy over additional DLLs to bundle to the wheels.
-  # The find command below is just to print where the libraries are, for debugging.
-  # FIXME: this needs to use Mingw and UCRT libraries
-  - C:\cygwin\bin\find "C:\Program Files (x86)\Microsoft Visual Studio" -type f -name 'msvcp*.dll'
-  # * Python >=3.5
-  # Copy over MSVC C++ runtime library, which Python.org does no bundle, but is required by us.
-  # The version should match the compiler version, see https://wiki.python.org/moin/WindowsCompilers
-  - mkdir "build\lib.win32-%PYTHON_VERSION%\scipy\.libs"
-  - mkdir "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x86\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win32-%PYTHON_VERSION%\scipy\.libs\"
-  - copy "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Redist\MSVC\14.29.30133\x64\Microsoft.VC142.CRT\msvcp140.dll" "build\lib.win-amd64-%PYTHON_VERSION%\scipy\.libs\"
   # Build wheel using meson-python
   - ps: |
       $PYTHON_ARCH = $env:PYTHON_ARCH
-      If ($PYTHON_ARCH -eq 32) {
-          $MINGW = $env:MINGW_32
-          # 32-bit build requires careful adjustments
-          # until Microsoft has a switch we can use
-          # directly for i686 mingw
-          $env:NPY_DISTUTILS_APPEND_FLAGS = 1
-          $env:CXXFLAGS = "-m32"
-          $env:LDFLAGS = "-m32"
-          refreshenv
-      } Else {
-          $MINGW = $env:MINGW_64
-      }
+      $PKG_CONFIG_PATH = $env:PKG_CONFIG_PATH
+      $MINGW = $env:MINGW_64
       $env:Path += ";$MINGW"
-      $env:NPY_NUM_BUILD_JOBS = "4"
   - git submodule update --init
   - python -m build --wheel
   - ps: |
