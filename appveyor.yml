@@ -87,8 +87,9 @@ install:
       $PYTHON = $env:PYTHON
 
       choco install unzip -y
-      choco install wget -y
-      wget https://github.com/scipy/scipy-ci-artifacts/raw/main/openblas_32_if.zip
+      (New-Object Net.WebClient).DownloadFile('<file_url>', '<local_file_name>')
+      $source = "https://github.com/scipy/scipy-ci-artifacts/raw/main/openblas_32_if.zip"
+      $destination = Join-Path -Path $pwd -ChildPath 'openblas_32_if.zip'
       unzip -d c:\ openblas_32_if.zip
       $env:PKG_CONFIG_PATH = "c:\opt\openblas\if_32\64\lib\pkgconfig;"
 
