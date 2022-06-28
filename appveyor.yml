@@ -101,6 +101,8 @@ build_script:
   - ps: |
       $cwd = Get-Location
       ls $cwd
+      ls $cwd/scipy
+      ls $cwd/scipy/scipy
       rm -Force $cwd/scipy/scipy/_distributor_init.py
       cp $cwd/_distributor_init.py $cwd/scipy/scipy/
       cd scipy
