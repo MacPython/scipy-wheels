@@ -6,6 +6,7 @@ source gfortran-install/gfortran_utils.sh
 function pyproject_wheel_cmd {
     # Build wheels with `build` (uses build isolation, and dependencies listed
     # in pyproject.toml)
+    $PYTHON_EXE -m pip install build
     $PYTHON_EXE -m build --wheel
 }
 
