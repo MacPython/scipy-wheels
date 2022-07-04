@@ -7,7 +7,7 @@ env:
     global:
         - REPO_DIR=scipy
         # Also see DAILY_COMMIT below
-        - BUILD_COMMIT=72a5f46
+        - BUILD_COMMIT=a6a770954
         - PLAT=x86_64
         - CYTHON_BUILD_DEP="Cython==0.29.24"
         - PYTHRAN_BUILD_DEP="pythran"
