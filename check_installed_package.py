@@ -19,8 +19,11 @@ import platform
 from pathlib import Path
 
 def check_text(text):
-    ok = (u'Copyright (c)' in text and
-          re.search(u'This binary distribution of \w+ also bundles the following software', text))
+    ok = (
+        u'Copyright (c)' in text and
+        re.search(u'The SciPy repository and source distributions bundle') and
+        re.search(u'This binary distribution of \w+ also bundles the following software', text)
+    )
     return ok
 
 def check_dll_paths(mod):
@@ -55,9 +58,18 @@ def main():
     __import__(args.module)
     mod = sys.modules[args.module]
 
-    # Check license text
-    license_txt = os.path.join(os.path.dirname(mod.__file__),
-                               'LICENSE.txt')
+    # Check license text - note that the license file is not installed inside
+    # the package, but in the `scipy-x.y.z.dist-info` dir right next to it
+    site_packages = Path(mod.__file__).parent.parent
+    scipy_distinfo = [
+        path for path in os.listdir(site_packages) if "scipy" in path and
+        ".dist-info" in path
+    ]
+    if len(scipy_distinfo) > 1:
+        raise RuntimeError("Found multiple .dist-info dirs, not expected")
+
+    distinfo_dir = site_packages / scipy_distinfo[0]
+    license_txt = distinfo_dir / 'LICENSE.txt'
     with io.open(license_txt, 'r', encoding='utf-8') as f:
         text = f.read()
 

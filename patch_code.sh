@@ -9,6 +9,7 @@ if [ ! -f $repo_dir/LICENSE.txt ]; then
     exit 1
 fi
 
+cat $repo_dir/LICENSES_bundled.txt >> $repo_dir/LICENSE.txt
 if [ -z "$IS_OSX" ]; then
     cat LICENSE_linux.txt >> $repo_dir/LICENSE.txt
 else

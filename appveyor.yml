@@ -111,7 +111,8 @@ build_script:
       rm -Force $cwd/scipy/scipy/_distributor_init.py
       cp $cwd/_distributor_init.py $cwd/scipy/scipy/
       cd scipy
-  # Append license text relevant for the built wheel
+  # Append license texts relevant for the built wheel
+  - type LICENSES_bundled.txt >> LICENSE.txt
   - type ..\LICENSE_win32.txt >> LICENSE.txt
   # Build wheel using meson-python
   - ps: |
