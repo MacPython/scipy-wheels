@@ -33,6 +33,43 @@ jobs:
       - python: 3.5
   include:
     - stage: Build and test wheel
+      os: linux
+      name: ARM64-Linux-Py311
+      arch: arm64-graviton2
+      dist: focal
+      virt: vm
+      group: edge
+      env:
+        - MB_PYTHON_VERSION=3.11
+        - PLAT=aarch64
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_IMAGE=quay.io/pypa/manylinux2014_${PLAT}
+        - MB_ML_VER=2014
+      script:
+        - echo "This stage will just build AArch64 wheel"
+      workspaces:
+        create:
+          name: ws6
+          paths:
+            - wheelhouse
+      after_success:
+        - echo "This stage will not upload aarch64 wheel"
+    - stage: Test wheel
+      arch: arm64-graviton2
+      name: ARM64-Linux-Py311
+      dist: focal
+      virt: vm
+      group: edge
+      env:
+        - MB_PYTHON_VERSION=3.11
+        - PLAT=aarch64
+        - CYTHON_BUILD_DEP="Cython"
+        - DOCKER_TEST_IMAGE=multibuild/focal_{PLAT}
+        - MB_ML_VER=2014
+      workspaces:
+        use: ws6
+      install:
+        - echo "This stage will test and upload the AArch64 wheel"
 
 before_install:
     - if [ "$TRAVIS_BRANCH" == "master" ]; then
