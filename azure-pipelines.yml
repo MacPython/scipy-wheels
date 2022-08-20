@@ -9,6 +9,7 @@ schedules:
 
 pr:
 - master
+- v1.9.x
 
 variables:
   BUILD_COMMIT: "651a9b717"
@@ -19,3 +20,8 @@ jobs:
       name: linux
       vmImage: ubuntu-18.04
       matrix:
+        amd64-linux-py3.11:
+          AZURE_PYTHON_VERSION: "3.9"
+          MB_PYTHON_VERSION: "3.11"
+          MB_ML_VER: "2014"
+          DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
