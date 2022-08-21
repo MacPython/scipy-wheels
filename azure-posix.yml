@@ -78,6 +78,15 @@ jobs:
           TEST_DEPENDS="oldest-supported-numpy pytest pytest-xdist pytest-faulthandler pytest-env"
           source multibuild/common_utils.sh
           source multibuild/travis_steps.sh
+          # capture pertinent components of before_install
+          # here, so that we get the venv activated again
+          # but make sure that we still freshly install a
+          # SciPy wheel; NumPy uses a custom setup_test_venv
+          # function..
+          source venv/bin/activate
+          python -m pip freeze > reqs.txt
+          python -m pip uninstall -y -r reqs.txt
+          python -m pip install --upgrade pip wheel
           install_run $PLAT
         displayName: Install wheel and test
         condition: ne(variables['PLAT'], 'arm64')
