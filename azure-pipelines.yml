@@ -25,3 +25,18 @@ jobs:
           MB_PYTHON_VERSION: "3.11"
           MB_ML_VER: "2014"
           DOCKER_TEST_IMAGE: "multibuild/focal_{PLAT}"
+  - template: azure-posix.yml
+    parameters:
+      name: macOS
+      vmImage: macOS-10.15
+      matrix:
+        osx-Py311:
+          AZURE_PYTHON_VERSION: "3.10"
+          MB_PYTHON_VERSION: "3.11"
+          MB_PYTHON_OSX_VER: "10.9"
+          PLAT: x86_64
+        osx-Py311-universal2:
+          AZURE_PYTHON_VERSION: "3.10"
+          MB_PYTHON_VERSION: "3.11"
+          MB_PYTHON_OSX_VER: "10.9"
+          PLAT: universal2
