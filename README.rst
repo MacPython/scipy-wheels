@@ -1,3 +1,7 @@
+**This repository is archived because SciPy is no longer building its wheels with multibuild.
+Instead, it uses cibuildwheel and the build config for that is maintained in https://github.com/scipy/scipy/.**
+
+
 ###################################
 Building and uploading scipy wheels
 ###################################
